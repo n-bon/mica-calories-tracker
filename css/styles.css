@@ -70,6 +70,12 @@ p {
   line-height: var(--i-titre-carte);
 }
 
+.entete__logo {
+  display: block;
+  width: var(--taille-logo);
+  height: var(--taille-logo);
+}
+
 /* Réserve la place de la barre d'onglets fixe */
 .principal {
   padding-bottom: calc(var(--hauteur-cible) + 2 * var(--e-1) + var(--e-4) + env(safe-area-inset-bottom));

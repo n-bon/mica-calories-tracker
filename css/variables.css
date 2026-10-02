@@ -73,6 +73,7 @@
   --hauteur-bouton: 3.0625rem;  /* 49 px : boutons principaux et secondaires, champs */
   --hauteur-graphique: 7rem;
   --largeur-contenu: 45rem;     /* 720 px */
+  --taille-logo: 2.5rem;        /* 56 px */
 
   /* Rayons */
   --r-petit: 7px;
