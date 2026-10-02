@@ -1,0 +1,192 @@
+/*
+ * Mica — styles
+ * Mobile first : styles de base pour ≈ 375 px, adaptations via @media (min-width: 45rem).
+ * Uniquement des var(--…) définies dans variables.css.
+ */
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: var(--fond);
+  color: var(--texte);
+  font-family: var(--police);
+  font-size: var(--t-corps);
+  font-weight: var(--g-normal);
+  line-height: var(--i-corps);
+  font-variant-numeric: tabular-nums;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+p {
+  max-width: var(--largeur-texte);
+}
+
+:focus-visible {
+  outline: var(--contour-focus) solid var(--action);
+  outline-offset: var(--decalage-focus);
+}
+
+/* ==========================================================================
+   Layout
+   ========================================================================== */
+
+.entete,
+.principal {
+  width: 100%;
+  max-width: calc(var(--largeur-contenu) + env(safe-area-inset-left) + env(safe-area-inset-right));
+  margin-inline: auto;
+  padding-left: calc(var(--e-h-2) + env(safe-area-inset-left));
+  padding-right: calc(var(--e-h-2) + env(safe-area-inset-right));
+}
+
+.entete {
+  padding-top: calc(var(--e-3) + env(safe-area-inset-top));
+  padding-bottom: var(--e-2);
+}
+
+.entete__titre {
+  font-size: var(--t-titre-carte);
+  font-weight: var(--g-gras);
+  line-height: var(--i-titre-carte);
+}
+
+.entete__logo {
+  display: block;
+  width: auto;
+  height: var(--taille-logo);
+}
+
+/* Réserve la place de la barre d'onglets fixe */
+.principal {
+  padding-bottom: calc(var(--hauteur-cible) + 2 * var(--e-1) + var(--e-4) + env(safe-area-inset-bottom));
+}
+
+/* Chaque vue est une grille bento : 2 colonnes sur mobile */
+.vue {
+  display: none;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  row-gap: var(--e-2);
+  column-gap: var(--e-h-2);
+}
+
+.vue__titre {
+  grid-column: 1 / -1;
+  font-size: var(--t-titre-ecran);
+  font-weight: var(--g-gras);
+  line-height: var(--i-titre-ecran);
+}
+
+/* ==========================================================================
+   Composants
+   ========================================================================== */
+
+/* Carte bento */
+.carte {
+  min-width: 0;
+  padding: var(--e-3) var(--e-h-3);
+  background-color: var(--carte);
+  border: var(--bordure-carte) solid var(--bordure);
+  border-radius: var(--r-carte);
+}
+
+.carte--demi {
+  grid-column: span 1;
+}
+
+.carte--pleine {
+  grid-column: 1 / -1;
+}
+
+/* Barre d'onglets */
+.onglets {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding-top: var(--e-1);
+  padding-right: calc(var(--e-h-1) + env(safe-area-inset-right));
+  padding-bottom: calc(var(--e-1) + env(safe-area-inset-bottom));
+  padding-left: calc(var(--e-h-1) + env(safe-area-inset-left));
+  background-color: var(--carte);
+  border-top: var(--bordure-carte) solid var(--bordure);
+}
+
+.onglets__liste {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  column-gap: var(--e-h-1);
+  max-width: var(--largeur-contenu);
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+}
+
+.onglets__onglet {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--hauteur-cible);
+  padding-block: var(--e-1);
+  border-radius: var(--r-cta);
+  color: var(--texte);
+  font-size: var(--t-label);
+  font-weight: var(--g-gras);
+  line-height: var(--i-label);
+  text-align: center;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--duree) var(--courbe), color var(--duree) var(--courbe), transform var(--duree) var(--courbe);
+}
+
+.onglets__onglet:active {
+  transform: scale(var(--echelle-appui));
+}
+
+/* ==========================================================================
+   États
+   ========================================================================== */
+
+.vue--active {
+  display: grid;
+}
+
+.onglets__onglet--actif {
+  background-color: var(--action);
+  color: var(--texte-inverse);
+}
+
+/* ==========================================================================
+   Écrans larges (≥ 45rem ≈ 720 px)
+   ========================================================================== */
+
+@media (min-width: 45rem) {
+  .vue {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .carte--demi {
+    grid-column: span 2;
+  }
+}

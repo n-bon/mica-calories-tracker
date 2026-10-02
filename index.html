@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; manifest-src 'self'; worker-src 'self'; base-uri 'self'; form-action 'none'; object-src 'none'">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#fffffc">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Mica">
+  <title>Mica</title>
+  <link rel="icon" href="./icons/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="stylesheet" href="./css/variables.css">
+  <link rel="stylesheet" href="./css/styles.css">
+  <script defer src="./vendor/supabase.js"></script>
+  <script defer src="./js/app.js"></script>
+</head>
+<body>
+  <header class="entete">
+    <h1 class="entete__titre">
+      <img class="entete__logo" src="./icons/logo.png" alt="Mica" width="848" height="911">
+    </h1>
+  </header>
+
+  <main class="principal">
+    <section id="vue-saisie" class="vue vue--active" aria-labelledby="titre-saisie">
+      <h2 id="titre-saisie" class="vue__titre">Saisie</h2>
+    </section>
+
+    <section id="vue-calendrier" class="vue" aria-labelledby="titre-calendrier">
+      <h2 id="titre-calendrier" class="vue__titre">Récap</h2>
+    </section>
+
+    <section id="vue-historique" class="vue" aria-labelledby="titre-historique">
+      <h2 id="titre-historique" class="vue__titre">Historique</h2>
+    </section>
+
+    <section id="vue-reglages" class="vue" aria-labelledby="titre-reglages">
+      <h2 id="titre-reglages" class="vue__titre">Réglages</h2>
+    </section>
+  </main>
+
+  <nav class="onglets" aria-label="Navigation principale">
+    <ul class="onglets__liste">
+      <li><a class="onglets__onglet onglets__onglet--actif" href="#vue-saisie" aria-current="page">Saisie</a></li>
+      <li><a class="onglets__onglet" href="#vue-calendrier">Récap</a></li>
+      <li><a class="onglets__onglet" href="#vue-historique">Historique</a></li>
+      <li><a class="onglets__onglet" href="#vue-reglages">Réglages</a></li>
+    </ul>
+  </nav>
+</body>
+</html>
