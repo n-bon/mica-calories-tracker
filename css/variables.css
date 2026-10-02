@@ -1,0 +1,100 @@
+/*
+ * Mica — variables de style (source unique de vérité)
+ * Valeurs issues de design.md § 11, converties selon tickets.md § 2.2 :
+ * polices et espacements verticaux en rem, bordures, rayons et espacements horizontaux en px.
+ *
+ * Point de rupture (écrit en dur dans styles.css, les media queries n'acceptant pas les variables) :
+ *   45rem (≈ 720 px) : grille bento à 4 colonnes, contenu centré.
+ */
+
+:root {
+  color-scheme: light;
+
+  /* Couleurs KPI */
+  --kpi-rouge: #5e0b15;
+  --kpi-or: #9f7719;
+  --kpi-vert: #496e4c;
+
+  /* Action */
+  --action: #061a40;
+
+  /* Surfaces */
+  --fond: #fffffc;
+  --carte: #ffffeb;
+  --bordure: #ffffad;
+  --vide: #ecece4;
+  --desactive-fond: #e6e6dc;
+
+  /* Texte */
+  --texte: #030f25;
+  --texte-inverse: #ffffff;
+  --texte-secondaire: #4b5262;
+  --champ-bordure: #4b5262;
+
+  /* Typographie */
+  --police: Arial, "Helvetica Neue", Helvetica, sans-serif;
+  --g-normal: 400;
+  --g-gras: 700;
+
+  --t-legende: 0.875rem;      /* 14 px */
+  --t-corps: 1rem;            /* 16 px */
+  --t-label: 1rem;            /* 16 px, gras */
+  --t-jour: 1.1875rem;        /* 19 px, gras */
+  --t-titre-carte: 1.1875rem; /* 19 px, gras */
+  --t-titre-ecran: 1.75rem;   /* 28 px, gras */
+  --t-kpi: 2.1875rem;         /* 35 px, gras */
+
+  --i-legende: 1.4;
+  --i-corps: 1.5;
+  --i-label: 1.3;
+  --i-jour: 1;
+  --i-titre-carte: 1.3;
+  --i-titre-ecran: 1.2;
+  --i-kpi: 1.1;
+
+  --largeur-texte: 70ch;
+
+  /* Espacements verticaux et liés au texte (rem, suivent la taille de texte) */
+  --e-1: 0.4375rem; /* 7 px */
+  --e-2: 0.875rem;  /* 14 px */
+  --e-3: 1.3125rem; /* 21 px */
+  --e-4: 1.75rem;   /* 28 px */
+  --e-6: 2.625rem;  /* 42 px */
+  --e-8: 3.5rem;    /* 56 px */
+
+  /* Espacements horizontaux (px, fixes) */
+  --e-h-1: 7px;
+  --e-h-2: 14px;
+  --e-h-3: 21px;
+  --e-h-4: 28px;
+
+  /* Dimensions */
+  --hauteur-cible: 2.75rem;     /* 44 px : cible tactile minimale, boutons de filtre, onglets */
+  --hauteur-bouton: 3.0625rem;  /* 49 px : boutons principaux et secondaires, champs */
+  --hauteur-graphique: 7rem;
+  --largeur-contenu: 45rem;     /* 720 px */
+
+  /* Rayons */
+  --r-petit: 7px;
+  --r-jour: 14px;
+  --r-cta: 21px;
+  --r-carte: 28px;
+
+  /* Bordures et contours */
+  --bordure-carte: 1px;
+  --bordure-champ: 1.5px;
+  --bordure-secondaire: 1.5px;
+  --bordure-erreur: 2px;
+  --bordure-jour-courant: 3px;
+  --contour-focus: 3px;
+  --decalage-focus: 3px;
+
+  /* Mouvement */
+  --duree: 150ms;
+  --courbe: ease-out;
+  --echelle-appui: 0.98;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --duree: 0ms; }
+}
