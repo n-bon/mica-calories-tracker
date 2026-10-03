@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="./css/variables.css">
   <link rel="stylesheet" href="./css/styles.css">
   <script defer src="./vendor/supabase.js"></script>
-  <script defer src="./js/app.js"></script>
+  <script type="module" src="./js/app.js"></script>
 </head>
 <body>
   <header class="entete">
@@ -26,6 +26,12 @@
   </header>
 
   <main class="principal">
+    <aside id="bandeau-connexion" class="bandeau" aria-live="polite" hidden>
+      <span class="symbole" aria-hidden="true">!</span>
+      <p class="bandeau__texte"></p>
+      <a class="bandeau__lien bouton bouton--secondaire" href="#vue-reglages">Ouvrir Réglages</a>
+    </aside>
+
     <section id="vue-saisie" class="vue vue--active" aria-labelledby="titre-saisie">
       <h2 id="titre-saisie" class="vue__titre">Saisie</h2>
     </section>
@@ -40,6 +46,53 @@
 
     <section id="vue-reglages" class="vue" aria-labelledby="titre-reglages">
       <h2 id="titre-reglages" class="vue__titre">Réglages</h2>
+
+      <section class="carte carte--pleine" aria-labelledby="titre-connexion">
+        <div class="carte__entete">
+          <h3 id="titre-connexion" class="carte__titre">Connexion</h3>
+          <p id="etat-connexion" class="etat" role="status">
+            <span class="etat__pastille" aria-hidden="true"></span>
+            <span class="etat__libelle">Vérification…</span>
+          </p>
+        </div>
+        <p id="aide-etat-connexion" class="carte__aide"></p>
+
+        <form id="formulaire-connexion" class="formulaire" novalidate>
+          <div class="champ">
+            <label class="champ__label" for="champ-url">URL du projet</label>
+            <input id="champ-url" class="champ__saisie" name="url" type="url" inputmode="url" autocomplete="off" autocapitalize="off" spellcheck="false" aria-describedby="aide-url erreur-url">
+            <p id="aide-url" class="champ__aide">De la forme https://votre-projet.supabase.co</p>
+            <p id="erreur-url" class="champ__erreur" hidden><span class="symbole" aria-hidden="true">!</span><span class="champ__erreur-texte"></span></p>
+          </div>
+
+          <div class="champ">
+            <label class="champ__label" for="champ-cle">Clé publishable</label>
+            <input id="champ-cle" class="champ__saisie" name="clePublishable" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-describedby="aide-clePublishable erreur-clePublishable">
+            <p id="aide-clePublishable" class="champ__aide">Commence par sb_publishable_. Ne jamais saisir la clé secret.</p>
+            <p id="erreur-clePublishable" class="champ__erreur" hidden><span class="symbole" aria-hidden="true">!</span><span class="champ__erreur-texte"></span></p>
+          </div>
+
+          <div class="champ">
+            <label class="champ__label" for="champ-email">Email</label>
+            <input id="champ-email" class="champ__saisie" name="email" type="email" inputmode="email" autocomplete="username" autocapitalize="off" spellcheck="false" aria-describedby="erreur-email">
+            <p id="erreur-email" class="champ__erreur" hidden><span class="symbole" aria-hidden="true">!</span><span class="champ__erreur-texte"></span></p>
+          </div>
+
+          <div class="champ">
+            <label class="champ__label" for="champ-mot-de-passe">Mot de passe</label>
+            <input id="champ-mot-de-passe" class="champ__saisie" name="motDePasse" type="password" autocomplete="current-password" aria-describedby="aide-motDePasse erreur-motDePasse">
+            <p id="aide-motDePasse" class="champ__aide">Sert uniquement à ouvrir la session, jamais conservé sur l’appareil.</p>
+            <p id="erreur-motDePasse" class="champ__erreur" hidden><span class="symbole" aria-hidden="true">!</span><span class="champ__erreur-texte"></span></p>
+          </div>
+
+          <p id="message-connexion" class="message" role="status" hidden><span class="message__symbole symbole" aria-hidden="true"></span><span class="message__texte"></span></p>
+
+          <div class="formulaire__actions">
+            <button id="bouton-connecter" class="bouton bouton--principal" type="submit">Se connecter</button>
+            <button id="bouton-deconnecter" class="bouton bouton--secondaire" type="button" disabled>Se déconnecter</button>
+          </div>
+        </form>
+      </section>
     </section>
   </main>
 

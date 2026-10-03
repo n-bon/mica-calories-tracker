@@ -74,12 +74,15 @@
   --hauteur-graphique: 7rem;
   --largeur-contenu: 45rem;     /* 720 px */
   --taille-logo: 2.5rem;        /* 56 px */
+  --taille-symbole: 1.3125rem;  /* 21 px : cercle des symboles « ! » et « ✓ » */
+  --taille-pastille: 0.875rem;  /* 14 px : pastille de statut */
 
   /* Rayons */
   --r-petit: 7px;
   --r-jour: 14px;
   --r-cta: 21px;
   --r-carte: 28px;
+  --r-rond: 50%;
 
   /* Bordures et contours */
   --bordure-carte: 1px;

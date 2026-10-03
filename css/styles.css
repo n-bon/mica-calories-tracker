@@ -41,6 +41,10 @@ p {
   max-width: var(--largeur-texte);
 }
 
+[hidden] {
+  display: none !important;
+}
+
 :focus-visible {
   outline: var(--contour-focus) solid var(--action);
   outline-offset: var(--decalage-focus);
@@ -117,6 +121,174 @@ p {
   grid-column: 1 / -1;
 }
 
+/* En-tête et texte de carte */
+.carte__entete {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--e-1) var(--e-h-2);
+}
+
+.carte__titre {
+  font-size: var(--t-titre-carte);
+  font-weight: var(--g-gras);
+  line-height: var(--i-titre-carte);
+}
+
+.carte__aide {
+  margin-top: var(--e-1);
+  color: var(--texte-secondaire);
+  font-size: var(--t-legende);
+  line-height: var(--i-legende);
+}
+
+/* Symboles « ! » et « ✓ » dans un cercle */
+.symbole {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--taille-symbole);
+  height: var(--taille-symbole);
+  border-radius: var(--r-rond);
+  background-color: var(--action);
+  color: var(--texte-inverse);
+  font-size: var(--t-legende);
+  font-weight: var(--g-gras);
+  line-height: 1;
+}
+
+/* Indicateur d'état (pastille + libellé) */
+.etat {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e-h-1);
+  font-size: var(--t-label);
+  font-weight: var(--g-gras);
+  line-height: var(--i-label);
+}
+
+.etat__pastille {
+  flex: none;
+  width: var(--taille-pastille);
+  height: var(--taille-pastille);
+  border: var(--bordure-champ) solid var(--champ-bordure);
+  border-radius: var(--r-rond);
+}
+
+/* Formulaires */
+.formulaire {
+  display: grid;
+  row-gap: var(--e-3);
+  margin-top: var(--e-3);
+}
+
+.formulaire__actions {
+  display: grid;
+  row-gap: var(--e-2);
+}
+
+.champ {
+  display: grid;
+  row-gap: var(--e-1);
+  min-width: 0;
+}
+
+.champ__label {
+  font-size: var(--t-label);
+  font-weight: var(--g-gras);
+  line-height: var(--i-label);
+}
+
+.champ__saisie {
+  width: 100%;
+  min-width: 0;
+  min-height: var(--hauteur-bouton);
+  padding: 0 var(--e-h-2);
+  background-color: var(--fond);
+  color: var(--texte);
+  font-family: inherit;
+  font-size: var(--t-corps);
+  line-height: var(--i-corps);
+  border: var(--bordure-champ) solid var(--champ-bordure);
+  border-radius: var(--r-jour);
+  appearance: none;
+}
+
+.champ__aide,
+.champ__erreur {
+  font-size: var(--t-legende);
+  line-height: var(--i-legende);
+}
+
+.champ__aide {
+  color: var(--texte-secondaire);
+}
+
+.champ__erreur {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--e-h-1);
+  color: var(--texte);
+}
+
+/* Messages système */
+.message {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--e-h-1);
+  line-height: var(--i-corps);
+}
+
+/* Boutons */
+.bouton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--hauteur-bouton);
+  padding: var(--e-1) var(--e-h-4);
+  border: var(--bordure-secondaire) solid transparent;
+  border-radius: var(--r-cta);
+  font-family: inherit;
+  font-size: var(--t-label);
+  font-weight: var(--g-gras);
+  line-height: var(--i-label);
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--duree) var(--courbe), transform var(--duree) var(--courbe);
+}
+
+.bouton--principal {
+  background-color: var(--action);
+  color: var(--texte-inverse);
+}
+
+.bouton--secondaire {
+  background-color: var(--carte);
+  color: var(--action);
+  border-color: var(--action);
+}
+
+/* Bandeau d'invitation (connexion à configurer) */
+.bandeau {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: var(--e-2) var(--e-h-2);
+  margin-bottom: var(--e-2);
+  padding: var(--e-3) var(--e-h-3);
+  background-color: var(--carte);
+  border: var(--bordure-carte) solid var(--bordure);
+  border-radius: var(--r-carte);
+}
+
+.bandeau__lien {
+  grid-column: 1 / -1;
+}
+
 /* Barre d'onglets */
 .onglets {
   position: fixed;
@@ -160,7 +332,8 @@ p {
   transition: background-color var(--duree) var(--courbe), color var(--duree) var(--courbe), transform var(--duree) var(--courbe);
 }
 
-.onglets__onglet:active {
+.onglets__onglet:active,
+.bouton:active:not(:disabled) {
   transform: scale(var(--echelle-appui));
 }
 
@@ -177,6 +350,41 @@ p {
   color: var(--texte-inverse);
 }
 
+.etat--actif .etat__pastille {
+  background-color: var(--action);
+  border-color: var(--action);
+}
+
+.champ__saisie[aria-invalid="true"] {
+  border-width: var(--bordure-erreur);
+  border-color: var(--action);
+}
+
+.message--succes {
+  padding: var(--e-2) var(--e-h-2);
+  background-color: var(--action);
+  color: var(--texte-inverse);
+  border-radius: var(--r-cta);
+}
+
+.message--succes .symbole {
+  background-color: var(--texte-inverse);
+  color: var(--action);
+}
+
+.bouton:disabled {
+  background-color: var(--desactive-fond);
+  color: var(--texte-secondaire);
+  border-color: transparent;
+  cursor: not-allowed;
+}
+
+@media (hover: hover) {
+  .bouton--secondaire:not(:disabled):hover {
+    background-color: var(--fond);
+  }
+}
+
 /* ==========================================================================
    Écrans larges (≥ 45rem ≈ 720 px)
    ========================================================================== */
@@ -188,5 +396,19 @@ p {
 
   .carte--demi {
     grid-column: span 2;
+  }
+
+  .bandeau {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+  }
+
+  .bandeau__lien {
+    grid-column: auto;
+  }
+
+  .formulaire__actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--e-h-2);
   }
 }
