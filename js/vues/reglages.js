@@ -117,24 +117,45 @@ export function focaliserConnexion() {
 
 const METRIQUES = ['calories', 'proteines', 'glucides', 'lipides'];
 const nomCoef = (metrique) => `coef${metrique[0].toUpperCase()}${metrique.slice(1)}`;
-const CHAMPS_OBJECTIFS = ['poidsActuel', 'poidsCible', ...METRIQUES.map(nomCoef)];
+const CHAMPS_POIDS = ['poidsActuel', 'poidsCible'];
+const CHAMPS_COEFS = METRIQUES.map(nomCoef);
 
 const POIDS_MAX = 500;
 const COEF_MAX = 999;
 
-const formObjectifs = document.getElementById('formulaire-objectifs');
-const boutonEnregistrer = document.getElementById('bouton-enregistrer-objectifs');
-const aideEnregistrer = document.getElementById('aide-enregistrer-objectifs');
+const formProfil = document.getElementById('formulaire-profil');
+const formCalcul = document.getElementById('formulaire-calcul');
 const aideVersion = document.getElementById('aide-version-objectifs');
 const apercu = Object.fromEntries(
   METRIQUES.map((metrique) => [metrique, document.getElementById(`apercu-${metrique}`)]),
 );
 
+// Chaque carte a son propre bouton, visible seulement si sa saisie diffère de la version enregistrée.
+const ENREGISTREMENTS = {
+  poids: {
+    formulaire: formProfil,
+    champs: CHAMPS_POIDS,
+    bouton: document.getElementById('bouton-enregistrer-poids'),
+    aide: document.getElementById('aide-enregistrer-poids'),
+    libelle: 'Enregistrer le poids',
+  },
+  coefs: {
+    formulaire: formCalcul,
+    champs: CHAMPS_COEFS,
+    bouton: document.getElementById('bouton-enregistrer-objectifs'),
+    aide: document.getElementById('aide-enregistrer-objectifs'),
+    libelle: 'Enregistrer les objectifs',
+  },
+};
+
 let mode = MODE_PAR_DEFAUT;
 let versionChargee = false;
+let enregistrementEnCours = false;
+// Dernière version chargée ou enregistrée ; sans version, poids vides et coefficients par défaut.
+let reference = { poidsActuel: NaN, poidsCible: NaN, coefs: { ...MODES[mode].coefs } };
 
 function champObjectifs(nom) {
-  return formObjectifs.elements[nom];
+  return formProfil.elements[nom] ?? formCalcul.elements[nom];
 }
 
 function remplirCoefs(coefs) {
@@ -144,7 +165,7 @@ function remplirCoefs(coefs) {
 }
 
 // Valeurs arrondies à la précision de la base (poids au dixième, coefficients au centième),
-// pour que l'aperçu affiche exactement ce qui sera enregistré.
+// pour que l'aperçu et la détection de changement portent sur ce qui sera enregistré.
 function lireValeursObjectifs() {
   return {
     poidsActuel: arrondir(lireNombre(champObjectifs('poidsActuel').value), 1),
@@ -158,15 +179,21 @@ function lireValeursObjectifs() {
   };
 }
 
-function validerObjectifs({ poidsActuel, poidsCible, coefs }) {
+function validerPoids(valeurs) {
   const erreurs = {};
-  [['poidsActuel', poidsActuel], ['poidsCible', poidsCible]].forEach(([nom, poids]) => {
+  CHAMPS_POIDS.forEach((nom) => {
+    const poids = valeurs[nom];
     if (!(poids > 0)) {
       erreurs[nom] = 'Saisir un poids en kg, par exemple 78,5.';
     } else if (poids > POIDS_MAX) {
       erreurs[nom] = `Poids trop élevé : ${POIDS_MAX} kg maximum.`;
     }
   });
+  return erreurs;
+}
+
+function validerCoefs(coefs) {
+  const erreurs = {};
   METRIQUES.forEach((metrique) => {
     const coef = coefs[metrique];
     if (!(coef > 0)) {
@@ -186,6 +213,28 @@ function mettreAJourApercu() {
     const valeur = objectifs[metrique];
     apercu[metrique].textContent = valeur > 0 ? formaterNombre(valeur, 1) : '—';
   });
+}
+
+const memeValeur = (a, b) => a === b || (Number.isNaN(a) && Number.isNaN(b));
+
+function mettreAJourBoutons() {
+  const valeurs = lireValeursObjectifs();
+  const modifie = {
+    poids: CHAMPS_POIDS.some((nom) => !memeValeur(valeurs[nom], reference[nom])),
+    coefs: METRIQUES.some((metrique) => !memeValeur(valeurs.coefs[metrique], reference.coefs[metrique])),
+  };
+  const connecte = lireEtat() === ETATS.connecte;
+  Object.entries(ENREGISTREMENTS).forEach(([cle, { bouton, aide }]) => {
+    bouton.hidden = !modifie[cle];
+    bouton.disabled = !connecte || enregistrementEnCours;
+    aide.hidden = !modifie[cle] || connecte;
+  });
+}
+
+function surSaisie(evenement) {
+  evenement.currentTarget.querySelector('.message').hidden = true;
+  mettreAJourApercu();
+  mettreAJourBoutons();
 }
 
 function afficherDateVersion(dateEffet) {
@@ -217,6 +266,7 @@ async function chargerDerniereVersion() {
       return;
     }
     mode = derniere.mode in MODES ? derniere.mode : MODE_PAR_DEFAUT;
+    reference = { poidsActuel: derniere.poidsActuel, poidsCible: derniere.poidsCible, coefs: derniere.coefs };
     champObjectifs('poidsActuel').value = formaterNombre(derniere.poidsActuel, 1, { groupement: false });
     champObjectifs('poidsCible').value = formaterNombre(derniere.poidsCible, 1, { groupement: false });
     remplirCoefs(derniere.coefs);
@@ -224,45 +274,70 @@ async function chargerDerniereVersion() {
     afficherDateVersion(derniere.dateEffet);
   } catch (erreur) {
     versionChargee = false;
-    afficherMessage(formObjectifs, 'erreur', messageErreurObjectifs(erreur, 'Lecture des objectifs'));
+    afficherMessage(formCalcul, 'erreur', messageErreurObjectifs(erreur, 'Lecture des objectifs'));
+  } finally {
+    mettreAJourBoutons();
   }
 }
 
 function retablirCoefs() {
-  effacerErreurs(formObjectifs, CHAMPS_OBJECTIFS.filter((nom) => nom.startsWith('coef')));
+  effacerErreurs(formCalcul, CHAMPS_COEFS);
   remplirCoefs(MODES[mode].coefs);
   mettreAJourApercu();
+  mettreAJourBoutons();
 }
 
-async function enregistrerObjectifs(evenement) {
-  evenement.preventDefault();
-  effacerErreurs(formObjectifs, CHAMPS_OBJECTIFS);
+// Enregistre une nouvelle version du jour : la carte concernée fournit ses valeurs saisies,
+// l'autre carte ses valeurs déjà enregistrées.
+async function enregistrer(cle, valeurs, erreurs, messageSucces) {
+  const { formulaire, champs, bouton, libelle } = ENREGISTREMENTS[cle];
+  effacerErreurs(formulaire, champs);
 
-  const valeurs = lireValeursObjectifs();
-  const erreurs = validerObjectifs(valeurs);
-  const champsEnErreur = CHAMPS_OBJECTIFS.filter((nom) => erreurs[nom]);
+  const champsEnErreur = champs.filter((nom) => erreurs[nom]);
   if (champsEnErreur.length > 0) {
-    champsEnErreur.forEach((nom) => afficherErreurChamp(formObjectifs, nom, erreurs[nom]));
+    champsEnErreur.forEach((nom) => afficherErreurChamp(formulaire, nom, erreurs[nom]));
     champObjectifs(champsEnErreur[0]).focus();
     return;
   }
 
-  boutonEnregistrer.disabled = true;
-  boutonEnregistrer.textContent = 'Enregistrement…';
+  enregistrementEnCours = true;
+  mettreAJourBoutons();
+  bouton.textContent = 'Enregistrement…';
   try {
     const version = await enregistrerVersion({
       mode,
       ...valeurs,
       objectifs: calculerObjectifs(valeurs.poidsActuel, valeurs.poidsCible, valeurs.coefs),
     });
+    reference = { poidsActuel: version.poidsActuel, poidsCible: version.poidsCible, coefs: version.coefs };
     afficherDateVersion(version.dateEffet);
-    afficherMessage(formObjectifs, 'succes', 'Objectifs enregistrés.');
+    afficherMessage(formulaire, 'succes', messageSucces);
   } catch (erreur) {
-    afficherMessage(formObjectifs, 'erreur', messageErreurObjectifs(erreur, 'Enregistrement'));
+    afficherMessage(formulaire, 'erreur', messageErreurObjectifs(erreur, 'Enregistrement'));
   } finally {
-    boutonEnregistrer.textContent = 'Enregistrer les objectifs';
-    boutonEnregistrer.disabled = lireEtat() !== ETATS.connecte;
+    enregistrementEnCours = false;
+    bouton.textContent = libelle;
+    mettreAJourBoutons();
   }
+}
+
+function enregistrerPoids(evenement) {
+  evenement.preventDefault();
+  const { poidsActuel, poidsCible } = lireValeursObjectifs();
+  const valeurs = { poidsActuel, poidsCible, coefs: reference.coefs };
+  enregistrer('poids', valeurs, validerPoids(valeurs), 'Poids enregistré.');
+}
+
+function enregistrerCoefs(evenement) {
+  evenement.preventDefault();
+  if (Object.keys(validerPoids(reference)).length > 0) {
+    effacerErreurs(formCalcul, CHAMPS_COEFS);
+    afficherMessage(formCalcul, 'erreur', 'Aucun poids enregistré : renseigner puis enregistrer le poids dans la carte Profil.');
+    return;
+  }
+  const { coefs } = lireValeursObjectifs();
+  const valeurs = { poidsActuel: reference.poidsActuel, poidsCible: reference.poidsCible, coefs };
+  enregistrer('coefs', valeurs, validerCoefs(coefs), 'Objectifs enregistrés.');
 }
 
 export function afficherReglages() {
@@ -281,8 +356,7 @@ function afficherEtat(etat) {
   etatConnexion.classList.toggle('etat--actif', connecte);
   boutonDeconnecter.disabled = !connecte;
 
-  boutonEnregistrer.disabled = !connecte;
-  aideEnregistrer.hidden = connecte;
+  mettreAJourBoutons();
   if (connecte) {
     chargerDerniereVersion();
   } else {
@@ -303,8 +377,10 @@ export function initialiserReglages() {
 
   formConnexion.addEventListener('submit', seConnecter);
   boutonDeconnecter.addEventListener('click', seDeconnecter);
-  formObjectifs.addEventListener('submit', enregistrerObjectifs);
-  formObjectifs.addEventListener('input', mettreAJourApercu);
+  formProfil.addEventListener('submit', enregistrerPoids);
+  formCalcul.addEventListener('submit', enregistrerCoefs);
+  formProfil.addEventListener('input', surSaisie);
+  formCalcul.addEventListener('input', surSaisie);
   document.getElementById('bouton-retablir-coefs').addEventListener('click', retablirCoefs);
   surChangementEtat(afficherEtat);
 }

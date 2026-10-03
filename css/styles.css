@@ -149,13 +149,6 @@ p {
   margin-top: var(--e-3);
 }
 
-/* Plusieurs cartes empilées dans un même formulaire */
-.groupe-cartes {
-  display: grid;
-  grid-column: 1 / -1;
-  row-gap: var(--e-2);
-}
-
 /* Symboles « ! » et « ✓ » dans un cercle */
 .symbole {
   display: inline-flex;
@@ -418,6 +411,11 @@ p {
 .onglets__onglet--actif {
   background-color: var(--action);
   color: var(--texte-inverse);
+}
+
+/* Un bloc de formulaire dont tous les éléments sont masqués ne réserve pas d'espace */
+.formulaire:not(:has(> :not([hidden]))) {
+  display: none;
 }
 
 .etat--actif .etat__pastille {
