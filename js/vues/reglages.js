@@ -11,7 +11,12 @@ import {
   validerConnexion,
 } from '../services/supabase.js';
 import { arrondir, formaterNombre, lireNombre } from '../utils/nombres.js';
-import { afficherErreurChamp, afficherMessage, effacerErreurs } from './formulaire.js';
+import {
+  afficherErreurChamp,
+  afficherMessage,
+  effacerErreurs,
+  messageErreurSupabase,
+} from './formulaire.js';
 
 /* ==========================================================================
    Connexion
@@ -243,19 +248,6 @@ function afficherDateVersion(dateEffet) {
   aideVersion.textContent = `Objectifs en vigueur depuis le ${libelle}.`;
 }
 
-function messageErreurObjectifs(erreur, action) {
-  if (!navigator.onLine || /fetch/i.test(erreur.message)) {
-    return `${action} impossible : Supabase injoignable. Vérifier la connexion internet, puis réessayer.`;
-  }
-  if (erreur.code === 'PGRST301' || erreur.code === 'PGRST303' || erreur.code === '42501') {
-    return `${action} impossible : session expirée. Saisir à nouveau le mot de passe dans Réglages → Connexion.`;
-  }
-  if (erreur.code === '42P01' || erreur.code === 'PGRST205') {
-    return `${action} impossible : table objectifs introuvable. Exécuter sql/schema.sql dans l’éditeur SQL de Supabase.`;
-  }
-  return `${action} impossible : ${erreur.message}`;
-}
-
 async function chargerDerniereVersion() {
   if (versionChargee || lireEtat() !== ETATS.connecte) return;
   versionChargee = true;
@@ -274,7 +266,7 @@ async function chargerDerniereVersion() {
     afficherDateVersion(derniere.dateEffet);
   } catch (erreur) {
     versionChargee = false;
-    afficherMessage(formCalcul, 'erreur', messageErreurObjectifs(erreur, 'Lecture des objectifs'));
+    afficherMessage(formCalcul, 'erreur', messageErreurSupabase(erreur, 'Lecture des objectifs', 'objectifs'));
   } finally {
     mettreAJourBoutons();
   }
@@ -313,7 +305,7 @@ async function enregistrer(cle, valeurs, erreurs, messageSucces) {
     afficherDateVersion(version.dateEffet);
     afficherMessage(formulaire, 'succes', messageSucces);
   } catch (erreur) {
-    afficherMessage(formulaire, 'erreur', messageErreurObjectifs(erreur, 'Enregistrement'));
+    afficherMessage(formulaire, 'erreur', messageErreurSupabase(erreur, 'Enregistrement', 'objectifs'));
   } finally {
     enregistrementEnCours = false;
     bouton.textContent = libelle;

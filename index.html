@@ -34,6 +34,85 @@
 
     <section id="vue-saisie" class="vue vue--active" aria-labelledby="titre-saisie">
       <h2 id="titre-saisie" class="vue__titre">Saisie</h2>
+
+      <form id="formulaire-saisie" class="saisie" novalidate>
+        <section class="carte carte--pleine saisie__debut" aria-labelledby="titre-type-repas">
+          <h3 id="titre-type-repas" class="carte__titre">Type de repas</h3>
+          <div class="choix" role="radiogroup" aria-labelledby="titre-type-repas" aria-describedby="erreur-typeRepas">
+            <label class="choix__option"><input class="choix__radio" type="radio" name="typeRepas" value="petit_dejeuner">Petit déjeuner</label>
+            <label class="choix__option"><input class="choix__radio" type="radio" name="typeRepas" value="dejeuner">Déjeuner</label>
+            <label class="choix__option"><input class="choix__radio" type="radio" name="typeRepas" value="collation">Collation</label>
+            <label class="choix__option"><input class="choix__radio" type="radio" name="typeRepas" value="diner">Dîner</label>
+            <label class="choix__option"><input class="choix__radio" type="radio" name="typeRepas" value="boisson">Boisson</label>
+          </div>
+          <p id="erreur-typeRepas" class="champ__erreur" hidden><span class="symbole" aria-hidden="true">!</span><span class="champ__erreur-texte"></span></p>
+        </section>
+
+        <div class="carte carte--pleine formulaire formulaire--sans-marge">
+          <div class="champ">
+            <label class="champ__label" for="champ-nom">Repas pris</label>
+            <div class="combobox">
+              <input id="champ-nom" class="champ__saisie" name="nom" type="text" maxlength="100" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="suggestions-nom" aria-describedby="erreur-nom">
+              <ul id="suggestions-nom" class="suggestions" role="listbox" aria-label="Repas déjà saisis" hidden></ul>
+            </div>
+            <p id="erreur-nom" class="champ__erreur" hidden><span class="symbole" aria-hidden="true">!</span><span class="champ__erreur-texte"></span></p>
+          </div>
+
+          <div class="champ">
+            <label class="champ__label" for="champ-pris-le">Date et heure</label>
+            <input id="champ-pris-le" class="champ__saisie" name="prisLe" type="datetime-local" aria-describedby="erreur-prisLe">
+            <p id="erreur-prisLe" class="champ__erreur" hidden><span class="symbole" aria-hidden="true">!</span><span class="champ__erreur-texte"></span></p>
+          </div>
+        </div>
+
+        <div class="carte carte--demi champ">
+          <label class="champ__label" for="champ-calories">Calories</label>
+          <div class="champ__groupe">
+            <input id="champ-calories" class="champ__saisie" name="calories" type="text" inputmode="decimal" autocomplete="off" aria-describedby="erreur-calories">
+            <span class="champ__unite">kcal</span>
+          </div>
+          <p id="erreur-calories" class="champ__erreur" hidden><span class="symbole" aria-hidden="true">!</span><span class="champ__erreur-texte"></span></p>
+        </div>
+
+        <div class="carte carte--demi champ">
+          <label class="champ__label" for="champ-proteines">Protéines</label>
+          <div class="champ__groupe">
+            <input id="champ-proteines" class="champ__saisie" name="proteines" type="text" inputmode="decimal" autocomplete="off" aria-describedby="erreur-proteines">
+            <span class="champ__unite">g</span>
+          </div>
+          <p id="erreur-proteines" class="champ__erreur" hidden><span class="symbole" aria-hidden="true">!</span><span class="champ__erreur-texte"></span></p>
+        </div>
+
+        <div class="carte carte--demi champ">
+          <label class="champ__label" for="champ-glucides">Glucides</label>
+          <div class="champ__groupe">
+            <input id="champ-glucides" class="champ__saisie" name="glucides" type="text" inputmode="decimal" autocomplete="off" aria-describedby="erreur-glucides">
+            <span class="champ__unite">g</span>
+          </div>
+          <p id="erreur-glucides" class="champ__erreur" hidden><span class="symbole" aria-hidden="true">!</span><span class="champ__erreur-texte"></span></p>
+        </div>
+
+        <div class="carte carte--demi champ">
+          <label class="champ__label" for="champ-lipides">Lipides</label>
+          <div class="champ__groupe">
+            <input id="champ-lipides" class="champ__saisie" name="lipides" type="text" inputmode="decimal" autocomplete="off" aria-describedby="erreur-lipides">
+            <span class="champ__unite">g</span>
+          </div>
+          <p id="erreur-lipides" class="champ__erreur" hidden><span class="symbole" aria-hidden="true">!</span><span class="champ__erreur-texte"></span></p>
+        </div>
+
+        <div id="avertissement-coherence" class="carte carte--pleine avertissement" role="status" hidden>
+          <span class="symbole" aria-hidden="true">!</span>
+          <p class="avertissement__texte"></p>
+        </div>
+
+        <p id="message-saisie" class="message" role="status" hidden><span class="message__symbole symbole" aria-hidden="true"></span><span class="message__texte"></span></p>
+
+        <div class="saisie__pied">
+          <button id="bouton-enregistrer-repas" class="bouton bouton--principal" type="submit" aria-describedby="aide-enregistrer-repas" disabled>Enregistrer</button>
+          <p id="aide-enregistrer-repas" class="champ__aide">Connexion requise pour enregistrer : renseigner Réglages → Connexion.</p>
+        </div>
+      </form>
     </section>
 
     <section id="vue-calendrier" class="vue" aria-labelledby="titre-calendrier">

@@ -255,6 +255,136 @@ p {
   color: var(--texte);
 }
 
+.formulaire--sans-marge {
+  margin-top: 0;
+}
+
+/* Les champs date et heure d'iOS sont centrés par défaut */
+.champ__saisie::-webkit-date-and-time-value {
+  text-align: left;
+}
+
+/* Liste de suggestions flottante sous un champ */
+.combobox {
+  position: relative;
+}
+
+.suggestions {
+  position: absolute;
+  top: calc(100% + var(--e-1));
+  right: 0;
+  left: 0;
+  z-index: var(--z-flottant);
+  margin: 0;
+  padding: var(--e-1) var(--e-h-1);
+  list-style: none;
+  background-color: var(--carte);
+  border: var(--bordure-carte) solid var(--champ-bordure);
+  border-radius: var(--r-petit);
+}
+
+.suggestions__option {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: var(--hauteur-cible);
+  padding: var(--e-1) var(--e-h-1);
+  border-radius: var(--r-petit);
+  cursor: pointer;
+}
+
+.suggestions__nom {
+  font-size: var(--t-corps);
+  line-height: var(--i-label);
+}
+
+.suggestions__valeurs {
+  color: var(--texte-secondaire);
+  font-size: var(--t-legende);
+  line-height: var(--i-legende);
+}
+
+/* Choix unique sous forme de boutons de filtre (boutons radio natifs) */
+.choix {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--e-1) var(--e-h-1);
+  margin-top: var(--e-2);
+}
+
+.choix__option {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--hauteur-cible);
+  padding: 0 var(--e-h-2);
+  background-color: var(--carte);
+  color: var(--texte);
+  border: var(--bordure-carte) solid var(--bordure);
+  border-radius: var(--r-petit);
+  font-size: var(--t-label);
+  font-weight: var(--g-gras);
+  line-height: var(--i-label);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--duree) var(--courbe), color var(--duree) var(--courbe), transform var(--duree) var(--courbe);
+}
+
+/* Le bouton radio, invisible, couvre toute l'option : il reçoit le clic et le focus clavier */
+.choix__radio {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  border-radius: inherit;
+  appearance: none;
+  cursor: pointer;
+}
+
+.choix + .champ__erreur {
+  margin-top: var(--e-2);
+}
+
+/* Avertissement non bloquant */
+.avertissement {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--e-h-1);
+}
+
+/* Formulaire de saisie : grille bento */
+.saisie {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--e-2) var(--e-h-2);
+}
+
+/* Saisie progressive : tant qu'aucun type de repas n'est choisi, seule la carte Type est affichée
+   (ainsi que le message « Repas enregistré » après un envoi). */
+.saisie:not(:has(.choix__radio:checked)) > :not(.saisie__debut, .message) {
+  display: none;
+}
+
+.saisie > :not(.saisie__debut) {
+  animation: apparition var(--duree) var(--courbe);
+}
+
+.saisie > .message {
+  grid-column: 1 / -1;
+}
+
+@keyframes apparition {
+  from {
+    opacity: 0;
+  }
+}
+
+.saisie__pied {
+  display: grid;
+  grid-column: 1 / -1;
+  row-gap: var(--e-2);
+}
+
 /* Aperçu des objectifs calculés */
 .apercu__titre {
   margin-top: var(--e-4);
@@ -396,6 +526,7 @@ p {
 }
 
 .onglets__onglet:active,
+.choix__option:active,
 .bouton:active:not(:disabled) {
   transform: scale(var(--echelle-appui));
 }
@@ -416,6 +547,21 @@ p {
 /* Un bloc de formulaire dont tous les éléments sont masqués ne réserve pas d'espace */
 .formulaire:not(:has(> :not([hidden]))) {
   display: none;
+}
+
+.suggestions__option--active {
+  background-color: var(--action);
+  color: var(--texte-inverse);
+}
+
+.suggestions__option--active .suggestions__valeurs {
+  color: var(--texte-inverse);
+}
+
+.choix__option:has(.choix__radio:checked) {
+  background-color: var(--action);
+  color: var(--texte-inverse);
+  border-color: var(--action);
 }
 
 .etat--actif .etat__pastille {
@@ -448,6 +594,16 @@ p {
 }
 
 @media (hover: hover) {
+  .suggestions__option:hover {
+    background-color: var(--action);
+    color: var(--texte-inverse);
+  }
+
+  .suggestions__option:hover .suggestions__valeurs {
+    color: var(--texte-inverse);
+  }
+
+  .choix__option:not(:has(.choix__radio:checked)):hover,
   .bouton--secondaire:not(:disabled):hover {
     background-color: var(--fond);
   }
@@ -475,7 +631,8 @@ p {
     grid-column: auto;
   }
 
-  .apercu {
+  .apercu,
+  .saisie {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 

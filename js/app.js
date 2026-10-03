@@ -1,5 +1,6 @@
 import { ETATS, demarrer, surChangementEtat } from './services/supabase.js';
 import { afficherReglages, focaliserConnexion, initialiserReglages } from './vues/reglages.js';
+import { afficherSaisie, initialiserSaisie } from './vues/saisie.js';
 
 const onglets = document.querySelectorAll('.onglets__onglet');
 const vues = document.querySelectorAll('.vue');
@@ -27,6 +28,7 @@ function afficherVue(idVue) {
   });
 
   window.scrollTo(0, 0);
+  if (idVue === 'vue-saisie') afficherSaisie();
   if (idVue === 'vue-reglages') afficherReglages();
 }
 
@@ -48,6 +50,7 @@ bandeau.querySelector('.bandeau__lien').addEventListener('click', (evenement) =>
   focaliserConnexion();
 });
 
+initialiserSaisie();
 initialiserReglages();
 surChangementEtat(afficherBandeau);
 demarrer();

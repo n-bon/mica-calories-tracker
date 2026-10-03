@@ -77,6 +77,9 @@
   --taille-symbole: 1.3125rem;  /* 21 px : cercle des symboles « ! » et « ✓ » */
   --taille-pastille: 0.875rem;  /* 14 px : pastille de statut */
 
+  /* Superposition */
+  --z-flottant: 10;             /* listes déroulantes au-dessus des cartes suivantes */
+
   /* Rayons */
   --r-petit: 7px;
   --r-jour: 14px;
