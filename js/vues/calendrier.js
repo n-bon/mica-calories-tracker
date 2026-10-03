@@ -9,7 +9,7 @@ import {
 } from '../domaine/dates.js';
 import { statutDuJour } from '../domaine/scoring.js';
 import { ouvrirDetail } from './detail-jour.js';
-import { lireVersions } from '../services/objectifs.js';
+import { chargerDonneesRecap } from '../services/donnees-recap.js';
 import { lireRepasDePlage } from '../services/repas.js';
 import { ETATS, lireEtat } from '../services/supabase.js';
 import {
@@ -18,7 +18,7 @@ import {
   signalerErreurs,
 } from './formulaire.js';
 
-const PLAGE_PAR_DEFAUT = 30;
+const PLAGE_PAR_DEFAUT = 7;
 const CHAMPS_PLAGE = ['plageDebut', 'plageFin'];
 
 const LIBELLES_METRIQUE = {
@@ -29,7 +29,7 @@ const LIBELLES_METRIQUE = {
   lipides: 'lipides',
 };
 
-const titre = document.getElementById('titre-grille');
+const periode = document.getElementById('periode-calendrier');
 const etat = document.getElementById('etat-calendrier');
 const grille = document.getElementById('grille-calendrier');
 const legende = document.getElementById('legende-calendrier');
@@ -120,7 +120,7 @@ function plageCourante() {
 }
 
 function afficherPeriode(plage) {
-  titre.textContent = `Du ${formatPeriode.format(plage.debut)} au ${formatPeriode.format(plage.fin)}`;
+  periode.textContent = `Du ${formatPeriode.format(plage.debut)} au ${formatPeriode.format(plage.fin)}`;
 }
 
 // Charge repas et objectifs de la plage puis redessine la grille. En cas d'échec, la grille précédente reste affichée.
@@ -139,9 +139,12 @@ async function charger() {
   grille.setAttribute('aria-busy', 'true');
   afficherEtat('Chargement…');
   try {
-    const [repas, versions] = await Promise.all([lireRepasDePlage(plage), lireVersions()]);
+    // Les données des 90 derniers jours (partagées avec les cartes de synthèse) suffisent si la plage y est incluse.
+    const donnees = await chargerDonneesRecap();
+    const incluse = plage.debut >= donnees.plage.debut && plage.fin <= donnees.plage.fin;
+    const repas = incluse ? donnees.repas : await lireRepasDePlage(plage);
     if (numero !== chargementEnCours) return;
-    jours = agregerParJour(repas, versions, joursDePlage(plage));
+    jours = agregerParJour(repas, donnees.versions, joursDePlage(plage));
     afficherPeriode(plage);
     afficherEtat('');
     dessinerGrille();
@@ -153,7 +156,6 @@ async function charger() {
   }
 }
 
-// Recharge à chaque affichage de l'onglet : des repas ont pu être saisis entre-temps.
 export function afficherCalendrier() {
   charger();
 }

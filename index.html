@@ -118,55 +118,73 @@
     <section id="vue-calendrier" class="vue" aria-labelledby="titre-calendrier">
       <h2 id="titre-calendrier" class="vue__titre">Récap</h2>
 
-      <form id="formulaire-filtres" class="filtres" novalidate aria-label="Filtres du calendrier">
-        <div class="filtres__champ">
-          <label class="filtres__label" for="filtre-plage">Période</label>
-          <div class="selection">
-            <select id="filtre-plage" class="filtres__saisie" name="plage">
-              <option value="7">7 jours</option>
-              <option value="30" selected>30 jours</option>
-              <option value="90">90 jours</option>
-              <option value="personnalisee">Personnalisée</option>
-            </select>
-          </div>
-        </div>
+      <section id="carte-poids" class="carte carte--demi synthese" aria-labelledby="titre-poids">
+        <h3 id="titre-poids" class="carte__titre">Poids</h3>
+        <p class="synthese__valeur"><span id="poids-valeur">—</span> <span class="synthese__unite">kg</span></p>
+        <div id="poids-graphique" class="synthese__graphique"></div>
+      </section>
 
-        <div class="filtres__champ">
-          <label class="filtres__label" for="filtre-metrique">Métrique</label>
-          <div class="selection">
-            <select id="filtre-metrique" class="filtres__saisie" name="metrique">
-              <option value="global" selected>Global</option>
-              <option value="calories">Calories</option>
-              <option value="proteines">Protéines</option>
-              <option value="glucides">Glucides</option>
-              <option value="lipides">Lipides</option>
-            </select>
-          </div>
-        </div>
+      <section id="carte-resultat" class="carte carte--demi synthese" aria-labelledby="titre-resultat">
+        <h3 id="titre-resultat" class="carte__titre">Résultat</h3>
+        <p id="resultat-valeur" class="synthese__valeur">—</p>
+        <div id="resultat-graphique" class="synthese__graphique"></div>
+      </section>
 
-        <div class="filtres__personnalisee">
+
+      <section class="carte carte--pleine calendrier" aria-labelledby="titre-calendrier-jours">
+        <h3 id="titre-calendrier-jours" class="carte__titre">Objectifs par jour</h3>
+        <form id="formulaire-filtres" class="filtres" novalidate aria-label="Filtres du calendrier">
           <div class="filtres__champ">
-            <label class="filtres__label" for="champ-plage-debut">Début</label>
-            <input id="champ-plage-debut" class="filtres__saisie" name="plageDebut" type="date" aria-describedby="erreur-plageDebut">
-            <p id="erreur-plageDebut" class="champ__erreur" hidden><span class="symbole" aria-hidden="true">!</span><span class="champ__erreur-texte"></span></p>
+            <label class="filtres__label" for="filtre-plage">Période</label>
+            <div class="selection">
+              <select id="filtre-plage" class="filtres__saisie" name="plage">
+                <option value="7" selected>7 jours</option>
+                <option value="30">30 jours</option>
+                <option value="90">90 jours</option>
+                <option value="personnalisee">Personnalisée</option>
+              </select>
+            </div>
           </div>
-          <div class="filtres__champ">
-            <label class="filtres__label" for="champ-plage-fin">Fin</label>
-            <input id="champ-plage-fin" class="filtres__saisie" name="plageFin" type="date" aria-describedby="erreur-plageFin">
-            <p id="erreur-plageFin" class="champ__erreur" hidden><span class="symbole" aria-hidden="true">!</span><span class="champ__erreur-texte"></span></p>
-          </div>
-          <p class="message" role="status" hidden><span class="message__symbole symbole" aria-hidden="true"></span><span class="message__texte"></span></p>
-        </div>
-      </form>
 
-      <section class="carte carte--pleine calendrier" aria-labelledby="titre-grille">
-        <h3 id="titre-grille" class="carte__aide calendrier__periode"></h3>
+          <div class="filtres__champ">
+            <label class="filtres__label" for="filtre-metrique">Métrique</label>
+            <div class="selection">
+              <select id="filtre-metrique" class="filtres__saisie" name="metrique">
+                <option value="global" selected>Global</option>
+                <option value="calories">Calories</option>
+                <option value="proteines">Protéines</option>
+                <option value="glucides">Glucides</option>
+                <option value="lipides">Lipides</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="filtres__personnalisee">
+            <div class="filtres__champ">
+              <label class="filtres__label" for="champ-plage-debut">Début</label>
+              <input id="champ-plage-debut" class="filtres__saisie" name="plageDebut" type="date" aria-describedby="erreur-plageDebut">
+              <p id="erreur-plageDebut" class="champ__erreur" hidden><span class="symbole" aria-hidden="true">!</span><span class="champ__erreur-texte"></span></p>
+            </div>
+            <div class="filtres__champ">
+              <label class="filtres__label" for="champ-plage-fin">Fin</label>
+              <input id="champ-plage-fin" class="filtres__saisie" name="plageFin" type="date" aria-describedby="erreur-plageFin">
+              <p id="erreur-plageFin" class="champ__erreur" hidden><span class="symbole" aria-hidden="true">!</span><span class="champ__erreur-texte"></span></p>
+            </div>
+            <p class="message" role="status" hidden><span class="message__symbole symbole" aria-hidden="true"></span><span class="message__texte"></span></p>
+          </div>
+        </form>
+
+        <p id="periode-calendrier" class="carte__aide calendrier__periode"></p>
         <p id="etat-calendrier" class="calendrier__etat" role="status" hidden></p>
         <div class="calendrier__entete" aria-hidden="true">
           <span>lun</span><span>mar</span><span>mer</span><span>jeu</span><span>ven</span><span>sam</span><span>dim</span>
         </div>
         <ol id="grille-calendrier" class="calendrier__grille" aria-label="Jours de la période"></ol>
-        <ul id="legende-calendrier" class="legende" aria-label="Légende"></ul>
+      </section>
+
+      <section class="legende-bloc" aria-labelledby="titre-legende">
+        <h4 id="titre-legende" class="legende__titre">Légende</h4>
+        <ul id="legende-calendrier" class="legende"></ul>
       </section>
     </section>
 

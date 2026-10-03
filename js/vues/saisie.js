@@ -1,5 +1,6 @@
 import { caloriesEstimees, estIncoherent } from '../domaine/coherence-calorique.js';
 import { dateHeureLocaleISO } from '../domaine/dates.js';
+import { invaliderDonneesRecap } from '../services/donnees-recap.js';
 import { ajouterRepas } from '../services/repas.js';
 import { ETATS, lireEtat, surChangementEtat } from '../services/supabase.js';
 import { arrondir, formaterNombre, lireNombre } from '../utils/nombres.js';
@@ -141,6 +142,7 @@ async function enregistrer(evenement) {
   bouton.textContent = 'Enregistrement…';
   try {
     indexerRepas(await ajouterRepas(valeurs));
+    invaliderDonneesRecap();
     reinitialiser();
     afficherMessage(formulaire, 'succes', 'Repas enregistré.');
   } catch (erreur) {

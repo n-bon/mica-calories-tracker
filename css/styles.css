@@ -431,6 +431,13 @@ p {
   padding-inline: var(--e-h-2);
 }
 
+/* Titre, filtres et période alignés sur le padding normal d'une carte */
+.calendrier > .carte__titre,
+.calendrier > .filtres,
+.calendrier > .calendrier__periode {
+  padding-inline: var(--e-h-1);
+}
+
 .calendrier__etat {
   margin-top: var(--e-2);
   padding-inline: var(--e-h-1);
@@ -494,7 +501,7 @@ p {
 /* Filtres du calendrier : une ligne compacte, au-dessus de la grille */
 .filtres {
   display: grid;
-  grid-column: 1 / -1;
+  margin-top: var(--e-2);
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--e-1) var(--e-h-2);
 }
@@ -570,17 +577,26 @@ input.filtres__saisie {
 }
 
 .calendrier__periode {
-  margin-top: 0;
-  padding-inline: var(--e-h-1);
-  font-weight: var(--g-normal);
+  margin-top: var(--e-2);
 }
 
 /* Légende des couleurs du calendrier */
+/* Légende : hors de la carte, sur le fond de page */
+.legende-bloc {
+  grid-column: 1 / -1;
+}
+
+.legende__titre {
+  font-size: var(--t-label);
+  font-weight: var(--g-gras);
+  line-height: var(--i-label);
+}
+
 .legende {
   display: grid;
   row-gap: var(--e-1);
-  margin: var(--e-3) 0 0;
-  padding: 0 var(--e-h-1);
+  margin: var(--e-1) 0 0;
+  padding: 0;
   list-style: none;
   font-size: var(--t-legende);
   line-height: var(--i-legende);
@@ -613,6 +629,55 @@ input.filtres__saisie {
 
 .pastille--vide {
   background-color: var(--vide);
+}
+
+/* Cartes de synthèse (Poids, Résultat) : titre, valeur et petite courbe */
+.synthese__valeur {
+  margin-top: var(--e-1);
+  font-size: var(--t-kpi);
+  font-weight: var(--g-gras);
+  line-height: var(--i-kpi);
+}
+
+.synthese__unite {
+  font-size: var(--t-corps);
+  font-weight: var(--g-normal);
+}
+
+.synthese__valeur--vert {
+  color: var(--kpi-vert);
+}
+
+.synthese__valeur--orange {
+  color: var(--kpi-or);
+}
+
+.synthese__valeur--rouge {
+  color: var(--kpi-rouge);
+}
+
+.synthese__graphique:not(:empty) {
+  margin-top: var(--e-1);
+}
+
+/* Petite courbe (SVG) : aucun style en attribut, tout passe par ces classes */
+.graphique {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.graphique__ligne {
+  fill: none;
+  stroke: var(--texte-secondaire);
+  stroke-width: var(--trait-graphique);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.graphique__point {
+  fill: var(--texte-secondaire);
 }
 
 /* Panneau de détail d'un jour : feuille montant du bas sur mobile */

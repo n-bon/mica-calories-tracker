@@ -80,6 +80,9 @@
   /* États */
   --opacite-chargement: 0.5;    /* grille en cours de rechargement */
 
+  /* Petites courbes des cartes de synthèse */
+  --trait-graphique: 1.5px;
+
   /* Panneau de détail (feuille montant du bas) */
   --hauteur-panneau: 80dvh;
   --voile: rgb(3 15 37 / 40%);  /* --texte à 40 % derrière le panneau */

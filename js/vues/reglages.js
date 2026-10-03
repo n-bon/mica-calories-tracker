@@ -1,5 +1,6 @@
 import { MODES, MODE_PAR_DEFAUT } from '../config/defauts.js';
 import { calculerObjectifs } from '../domaine/calcul-objectifs.js';
+import { invaliderDonneesRecap } from '../services/donnees-recap.js';
 import { enregistrerVersion, lireVersions } from '../services/objectifs.js';
 import { lireConfig } from '../services/stockage-local.js';
 import {
@@ -302,6 +303,7 @@ async function enregistrer(cle, valeurs, erreurs, messageSucces) {
       objectifs: calculerObjectifs(valeurs.poidsActuel, valeurs.poidsCible, valeurs.coefs),
     });
     reference = { poidsActuel: version.poidsActuel, poidsCible: version.poidsCible, coefs: version.coefs };
+    invaliderDonneesRecap();
     afficherDateVersion(version.dateEffet);
     afficherMessage(formulaire, 'succes', messageSucces);
   } catch (erreur) {

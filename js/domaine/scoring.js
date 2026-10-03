@@ -71,3 +71,9 @@ export function statutDuJour(jour, metrique) {
   const teinte = couleur(scoreJour(jour.totaux, jour.objectifs)?.[metrique]?.ecart ?? null);
   return { couleur: teinte, libelle: STATUTS[teinte] };
 }
+
+// Couleur d'un score de réalisation en % : vert ≥ 90 %, orange ≥ 80 %, rouge en dessous.
+export function couleurScore(score) {
+  if (score === null || !Number.isFinite(score)) return 'vide';
+  return couleur(arrondir((100 - score) / 100, PRECISION));
+}
