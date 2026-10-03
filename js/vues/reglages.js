@@ -4,7 +4,9 @@ import { invaliderDonneesRecap } from '../services/donnees-recap.js';
 import { enregistrerVersion, lireObjectifsBruts, lireVersions } from '../services/objectifs.js';
 import { lireTousLesRepas } from '../services/repas.js';
 import { lireConfig } from '../services/stockage-local.js';
+import { estEnLigne, surChangementReseau } from '../services/reseau.js';
 import {
+  ErreurConnexion,
   ETATS,
   connecter,
   deconnecter,
@@ -95,7 +97,9 @@ async function seConnecter(evenement) {
     champConnexion('url').value = new URL(valeurs.url).origin;
     afficherMessage(formConnexion, 'succes', 'Connexion réussie.');
   } catch (erreur) {
-    if (erreur.champ) {
+    if (!(erreur instanceof ErreurConnexion)) {
+      afficherMessage(formConnexion, 'erreur', 'Connexion impossible pour le moment. Réessayer dans quelques instants.');
+    } else if (erreur.champ) {
       afficherErreurChamp(formConnexion, erreur.champ, erreur.message);
       champConnexion(erreur.champ).focus();
     } else {
@@ -232,10 +236,12 @@ function mettreAJourBoutons() {
     coefs: METRIQUES.some((metrique) => !memeValeur(valeurs.coefs[metrique], reference.coefs[metrique])),
   };
   const connecte = lireEtat() === ETATS.connecte;
+  const enLigne = estEnLigne();
   Object.entries(ENREGISTREMENTS).forEach(([cle, { bouton, aide }]) => {
     bouton.hidden = !modifie[cle];
-    bouton.disabled = !connecte || enregistrementEnCours;
-    aide.hidden = !modifie[cle] || connecte;
+    bouton.disabled = !connecte || !enLigne || enregistrementEnCours;
+    // Hors connexion, c'est le bandeau en haut de l'écran qui l'explique.
+    aide.hidden = !modifie[cle] || connecte || !enLigne;
   });
 }
 
@@ -352,7 +358,7 @@ const boutonsExport = {
 let exportEnCours = false;
 
 function mettreAJourExport() {
-  const actif = lireEtat() === ETATS.connecte && !exportEnCours;
+  const actif = lireEtat() === ETATS.connecte && estEnLigne() && !exportEnCours;
   Object.values(boutonsExport).forEach((bouton) => {
     bouton.disabled = !actif;
   });
@@ -424,4 +430,8 @@ export function initialiserReglages() {
   boutonsExport.json.addEventListener('click', () => exporter('json'));
   boutonsExport.csv.addEventListener('click', () => exporter('csv'));
   surChangementEtat(afficherEtat);
+  surChangementReseau(() => {
+    mettreAJourBoutons();
+    mettreAJourExport();
+  });
 }

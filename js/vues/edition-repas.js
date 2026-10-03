@@ -1,5 +1,6 @@
 import { invaliderDonneesRecap } from '../services/donnees-recap.js';
 import { modifierRepas, supprimerRepas } from '../services/repas.js';
+import { estEnLigne, surChangementReseau } from '../services/reseau.js';
 import { ETATS, lireEtat, surChangementEtat } from '../services/supabase.js';
 import {
   afficherMessage,
@@ -29,7 +30,7 @@ let resultat = null;
 let surFermeture = null;
 
 function mettreAJourBoutons() {
-  const actif = lireEtat() === ETATS.connecte && !envoiEnCours;
+  const actif = lireEtat() === ETATS.connecte && estEnLigne() && !envoiEnCours;
   boutonEnregistrer.disabled = !actif || !champsRepas.estComplet();
   boutonSupprimer.disabled = !actif;
   boutonConfirmer.disabled = !actif;
@@ -129,7 +130,6 @@ export function initialiserEdition() {
     if (panneau.open) boutonSupprimer.focus();
   });
   panneau.addEventListener('close', () => surFermeture?.(resultat));
-  surChangementEtat(() => {
-    if (champsRepas) mettreAJourBoutons();
-  });
+  surChangementEtat(mettreAJourBoutons);
+  surChangementReseau(mettreAJourBoutons);
 }

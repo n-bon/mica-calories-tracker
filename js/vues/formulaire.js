@@ -50,17 +50,27 @@ export function afficherMessage(formulaire, type, texte) {
   message.hidden = false;
 }
 
+// Codes PostgreSQL / PostgREST regroupés par cause, pour un message compréhensible.
+const CODES_SESSION = ['PGRST301', 'PGRST302', 'PGRST303', '42501'];
+const CODES_TABLE = ['42P01', 'PGRST205'];
+const CODES_CONTRAINTE = ['23502', '23505', '23514', '22001', '22003', '22007', '22008', '22P02'];
+
+// Message clair pour une erreur Supabase : jamais le message technique brut.
 export function messageErreurSupabase(erreur, action, table) {
-  if (!navigator.onLine || /fetch/i.test(erreur.message)) {
-    return `${action} impossible : Supabase injoignable. Vérifier la connexion internet, puis réessayer.`;
+  const code = erreur?.code;
+  if (!navigator.onLine || /fetch|network|réseau/i.test(erreur?.message ?? '')) {
+    return `${action} impossible : pas de connexion internet ou Supabase injoignable. Réessayer une fois connecté.`;
   }
-  if (erreur.code === 'PGRST301' || erreur.code === 'PGRST303' || erreur.code === '42501') {
+  if (CODES_SESSION.includes(code) || /jwt|session/i.test(erreur?.message ?? '')) {
     return `${action} impossible : session expirée. Saisir à nouveau le mot de passe dans Réglages → Connexion.`;
   }
-  if (erreur.code === '42P01' || erreur.code === 'PGRST205') {
+  if (CODES_TABLE.includes(code)) {
     return `${action} impossible : table ${table} introuvable. Exécuter sql/schema.sql dans l’éditeur SQL de Supabase.`;
   }
-  return `${action} impossible : ${erreur.message}`;
+  if (CODES_CONTRAINTE.includes(code)) {
+    return `${action} impossible : une valeur a été refusée par la base. Vérifier les champs, puis réessayer.`;
+  }
+  return `${action} impossible pour le moment. Réessayer dans quelques instants.`;
 }
 
 // Copie d'un fragment de HTML avec des identifiants préfixés (et les références qui les citent),

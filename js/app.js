@@ -1,5 +1,6 @@
 import { invaliderDonneesRecap } from './services/donnees-recap.js';
-import { ETATS, demarrer, surChangementEtat } from './services/supabase.js';
+import { estEnLigne, surChangementReseau } from './services/reseau.js';
+import { ETATS, demarrer, lireEtat, surChangementEtat } from './services/supabase.js';
 import { afficherCalendrier, initialiserCalendrier } from './vues/calendrier.js';
 import { afficherCartePoids } from './vues/carte-poids.js';
 import { afficherCarteResultat } from './vues/carte-resultat.js';
@@ -13,6 +14,7 @@ const onglets = document.querySelectorAll('.onglets__onglet');
 const vues = document.querySelectorAll('.vue');
 const bandeau = document.getElementById('bandeau-connexion');
 const bandeauTexte = bandeau.querySelector('.bandeau__texte');
+const bandeauHorsLigne = document.getElementById('bandeau-hors-ligne');
 
 const TEXTES_BANDEAU = {
   [ETATS.nonConfigure]: 'Mica n’est pas encore relié à Supabase. Renseigner la connexion dans Réglages → Connexion.',
@@ -47,8 +49,9 @@ function afficherRecap() {
   afficherCalendrier();
 }
 
+// Hors connexion, seul le bandeau réseau s'affiche : celui de la connexion Supabase serait redondant.
 function afficherBandeau(etat) {
-  bandeau.hidden = etat === ETATS.connecte || etat === ETATS.verification;
+  bandeau.hidden = etat === ETATS.connecte || etat === ETATS.verification || !estEnLigne();
   if (!bandeau.hidden) bandeauTexte.textContent = TEXTES_BANDEAU[etat];
 }
 
@@ -78,6 +81,13 @@ surChangementEtat(() => {
   invaliderDonneesRecap();
   if (document.getElementById('vue-calendrier').classList.contains('vue--active')) afficherRecap();
   if (document.getElementById('vue-historique').classList.contains('vue--active')) afficherHistorique();
+});
+surChangementReseau((enLigne) => {
+  bandeauHorsLigne.hidden = enLigne;
+  afficherBandeau(lireEtat());
+  // Au retour du réseau, la vue affichée recharge ses données sans recharger la page.
+  if (enLigne && document.getElementById('vue-calendrier').classList.contains('vue--active')) afficherRecap();
+  if (enLigne && document.getElementById('vue-historique').classList.contains('vue--active')) afficherHistorique();
 });
 demarrer();
 

@@ -176,7 +176,7 @@ function traduireErreur(erreur) {
     }
     return new ErreurConnexion('url', "Projet injoignable à cette URL. Vérifier l'URL du projet, ou qu'il n'est pas en pause dans Supabase.");
   }
-  return new ErreurConnexion(null, `Connexion impossible : ${erreur.message}`);
+  return new ErreurConnexion(null, 'Connexion impossible pour le moment. Réessayer dans quelques instants.');
 }
 
 export async function connecter({ url, clePublishable, email, motDePasse }) {
