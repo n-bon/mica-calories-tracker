@@ -426,6 +426,76 @@ p {
   font-weight: var(--g-normal);
 }
 
+/* Calendrier : 7 colonnes du lundi au dimanche, une case carrée par jour */
+.calendrier {
+  padding-inline: var(--e-h-2);
+}
+
+.calendrier > .carte__titre,
+.calendrier > .carte__aide {
+  padding-inline: var(--e-h-1);
+}
+
+.calendrier__etat {
+  margin-top: var(--e-2);
+  padding-inline: var(--e-h-1);
+  color: var(--texte-secondaire);
+}
+
+.calendrier__entete,
+.calendrier__grille {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  column-gap: var(--e-h-1);
+}
+
+.calendrier__entete {
+  margin-top: var(--e-3);
+  color: var(--texte-secondaire);
+  font-size: var(--t-legende);
+  line-height: var(--i-legende);
+  text-align: center;
+}
+
+.calendrier__grille {
+  row-gap: var(--e-1);
+  margin: var(--e-1) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.calendrier__grille[aria-busy="true"] {
+  opacity: var(--opacite-chargement);
+}
+
+.calendrier__case {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 1;
+  padding: 0;
+  overflow: hidden;
+  border: none;
+  border-radius: var(--r-jour);
+  font-family: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform var(--duree) var(--courbe);
+}
+
+.calendrier__mois {
+  font-size: var(--t-legende);
+  line-height: 1;
+}
+
+.calendrier__numero {
+  font-size: var(--t-jour);
+  font-weight: var(--g-gras);
+  line-height: var(--i-jour);
+}
+
 /* Messages système */
 .message {
   display: flex;
@@ -527,6 +597,7 @@ p {
 
 .onglets__onglet:active,
 .choix__option:active,
+.calendrier__case:active,
 .bouton:active:not(:disabled) {
   transform: scale(var(--echelle-appui));
 }
@@ -556,6 +627,36 @@ p {
 
 .suggestions__option--active .suggestions__valeurs {
   color: var(--texte-inverse);
+}
+
+.calendrier__case--vert {
+  background-color: var(--kpi-vert);
+  color: var(--texte-inverse);
+}
+
+.calendrier__case--orange {
+  background-color: var(--kpi-or);
+  color: var(--texte-inverse);
+}
+
+/* Sur l'or, le texte blanc n'est lisible qu'à partir de 19 px gras : l'abréviation du mois passe en --texte. */
+.calendrier__case--orange .calendrier__mois {
+  color: var(--texte);
+}
+
+.calendrier__case--rouge {
+  background-color: var(--kpi-rouge);
+  color: var(--texte-inverse);
+}
+
+.calendrier__case--vide {
+  background-color: var(--vide);
+  color: var(--texte-secondaire);
+}
+
+.calendrier__case--aujourdhui {
+  outline: var(--bordure-jour-courant) solid var(--texte);
+  outline-offset: calc(-1 * var(--bordure-jour-courant));
 }
 
 .choix__option:has(.choix__radio:checked) {

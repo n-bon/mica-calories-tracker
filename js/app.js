@@ -1,4 +1,5 @@
 import { ETATS, demarrer, surChangementEtat } from './services/supabase.js';
+import { afficherCalendrier } from './vues/calendrier.js';
 import { afficherReglages, focaliserConnexion, initialiserReglages } from './vues/reglages.js';
 import { afficherSaisie, initialiserSaisie } from './vues/saisie.js';
 
@@ -29,6 +30,7 @@ function afficherVue(idVue) {
 
   window.scrollTo(0, 0);
   if (idVue === 'vue-saisie') afficherSaisie();
+  if (idVue === 'vue-calendrier') afficherCalendrier();
   if (idVue === 'vue-reglages') afficherReglages();
 }
 
@@ -53,4 +55,7 @@ bandeau.querySelector('.bandeau__lien').addEventListener('click', (evenement) =>
 initialiserSaisie();
 initialiserReglages();
 surChangementEtat(afficherBandeau);
+surChangementEtat(() => {
+  if (document.getElementById('vue-calendrier').classList.contains('vue--active')) afficherCalendrier();
+});
 demarrer();

@@ -12,3 +12,31 @@ export function dateHeureLocaleISO(date = new Date()) {
   const minutes = String(date.getMinutes()).padStart(2, '0');
   return `${dateLocaleISO(date)}T${heures}:${minutes}`;
 }
+
+// Minuit local du jour de la date donnée.
+export function debutJour(date = new Date()) {
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+}
+
+// Ajoute des jours calendaires (et non 24 h) : reste juste lors des changements d'heure.
+export function ajouterJours(date, nombre) {
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate() + nombre);
+}
+
+// Tous les jours (minuit local) de debut à fin inclus.
+export function joursDePlage({ debut, fin }) {
+  const jours = [];
+  for (let jour = debutJour(debut); jour <= fin; jour = ajouterJours(jour, 1)) jours.push(jour);
+  return jours;
+}
+
+// Plage de nombreJours se terminant aujourd'hui inclus.
+export function plageDerniersJours(nombreJours, aujourdHui = new Date()) {
+  const fin = debutJour(aujourdHui);
+  return { debut: ajouterJours(fin, -(nombreJours - 1)), fin };
+}
+
+// Bornes d'une requête sur pris_le (§ 2.6) : début du premier jour local, début du lendemain du dernier, en ISO UTC.
+export function bornesUTC({ debut, fin }) {
+  return { depuis: debutJour(debut).toISOString(), avant: ajouterJours(fin, 1).toISOString() };
+}

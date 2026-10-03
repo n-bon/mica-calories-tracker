@@ -117,6 +117,16 @@
 
     <section id="vue-calendrier" class="vue" aria-labelledby="titre-calendrier">
       <h2 id="titre-calendrier" class="vue__titre">Récap</h2>
+
+      <section class="carte carte--pleine calendrier" aria-labelledby="titre-grille">
+        <h3 id="titre-grille" class="carte__titre"></h3>
+        <p id="periode-grille" class="carte__aide"></p>
+        <p id="etat-calendrier" class="calendrier__etat" role="status" hidden></p>
+        <div class="calendrier__entete" aria-hidden="true">
+          <span>lun</span><span>mar</span><span>mer</span><span>jeu</span><span>ven</span><span>sam</span><span>dim</span>
+        </div>
+        <ol id="grille-calendrier" class="calendrier__grille" aria-label="Jours de la période"></ol>
+      </section>
     </section>
 
     <section id="vue-historique" class="vue" aria-labelledby="titre-historique">
