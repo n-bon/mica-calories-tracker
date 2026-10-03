@@ -95,3 +95,14 @@ export async function supprimerRepas(id) {
   if (error) throw error;
   generation += 1;
 }
+
+// Toutes les lignes de la table repas (toutes colonnes), du plus ancien au plus récent : sauvegarde complète.
+export function lireTousLesRepas() {
+  return lireParPages(
+    () => obtenirClient()
+      .from('repas')
+      .select('*')
+      .order('pris_le', { ascending: true })
+      .order('id', { ascending: true }),
+  );
+}

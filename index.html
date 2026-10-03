@@ -349,8 +349,7 @@
 
           <div class="champ">
             <label class="champ__label" for="champ-mot-de-passe">Mot de passe</label>
-            <input id="champ-mot-de-passe" class="champ__saisie" name="motDePasse" type="password" autocomplete="current-password" aria-describedby="aide-motDePasse erreur-motDePasse">
-            <p id="aide-motDePasse" class="champ__aide">Sert uniquement à ouvrir la session, jamais conservé sur l’appareil.</p>
+            <input id="champ-mot-de-passe" class="champ__saisie" name="motDePasse" type="password" autocomplete="current-password" aria-describedby="erreur-motDePasse">
             <p id="erreur-motDePasse" class="champ__erreur" hidden><span class="symbole" aria-hidden="true">!</span><span class="champ__erreur-texte"></span></p>
           </div>
 
@@ -361,6 +360,18 @@
             <button id="bouton-deconnecter" class="bouton bouton--secondaire" type="button" disabled>Se déconnecter</button>
           </div>
         </form>
+      </section>
+
+      <section id="carte-export" class="carte carte--pleine" aria-labelledby="titre-export">
+        <h3 id="titre-export" class="carte__titre">Export</h3>
+        <p class="carte__aide">Exporter tout l'historique des repas saisis</p>
+        <div class="formulaire">
+          <p class="message" role="status" hidden><span class="message__symbole symbole" aria-hidden="true"></span><span class="message__texte"></span></p>
+          <div class="formulaire__actions">
+            <button id="bouton-export-json" class="bouton bouton--secondaire" type="button" disabled>Exporter en JSON</button>
+            <button id="bouton-export-csv" class="bouton bouton--secondaire" type="button" disabled>Exporter en CSV</button>
+          </div>
+        </div>
       </section>
     </section>
   </main>

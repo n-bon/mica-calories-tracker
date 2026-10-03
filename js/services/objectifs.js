@@ -58,3 +58,13 @@ export async function enregistrerVersion({ mode, poidsActuel, poidsCible, coefs,
   if (error) throw error;
   return versVersion(data);
 }
+
+// Toutes les lignes de la table objectifs, telles qu'en base : sauvegarde complète.
+export async function lireObjectifsBruts() {
+  const { data, error } = await obtenirClient()
+    .from('objectifs')
+    .select('*')
+    .order('date_effet', { ascending: true });
+  if (error) throw error;
+  return data;
+}
