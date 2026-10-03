@@ -47,6 +47,107 @@
     <section id="vue-reglages" class="vue" aria-labelledby="titre-reglages">
       <h2 id="titre-reglages" class="vue__titre">Réglages</h2>
 
+      <form id="formulaire-objectifs" class="groupe-cartes" novalidate>
+        <section class="carte" aria-labelledby="titre-profil">
+          <h3 id="titre-profil" class="carte__titre">Profil</h3>
+          <div class="formulaire formulaire--deux-colonnes">
+            <div class="champ">
+              <label class="champ__label" for="champ-poids-actuel">Poids actuel</label>
+              <div class="champ__groupe">
+                <input id="champ-poids-actuel" class="champ__saisie" name="poidsActuel" type="text" inputmode="decimal" autocomplete="off" aria-describedby="erreur-poidsActuel">
+                <span class="champ__unite">kg</span>
+              </div>
+              <p id="erreur-poidsActuel" class="champ__erreur" hidden><span class="symbole" aria-hidden="true">!</span><span class="champ__erreur-texte"></span></p>
+            </div>
+
+            <div class="champ">
+              <label class="champ__label" for="champ-poids-cible">Poids cible</label>
+              <div class="champ__groupe">
+                <input id="champ-poids-cible" class="champ__saisie" name="poidsCible" type="text" inputmode="decimal" autocomplete="off" aria-describedby="erreur-poidsCible">
+                <span class="champ__unite">kg</span>
+              </div>
+              <p id="erreur-poidsCible" class="champ__erreur" hidden><span class="symbole" aria-hidden="true">!</span><span class="champ__erreur-texte"></span></p>
+            </div>
+          </div>
+        </section>
+
+        <section class="carte" aria-labelledby="titre-calcul">
+          <h3 id="titre-calcul" class="carte__titre">Calcul des objectifs</h3>
+          <p class="carte__aide">Mode : Perte de masse graisseuse</p>
+
+          <div class="formulaire formulaire--deux-colonnes">
+            <div class="champ">
+              <label class="champ__label" for="champ-coef-calories">Calories</label>
+              <div class="champ__groupe">
+                <input id="champ-coef-calories" class="champ__saisie" name="coefCalories" type="text" inputmode="decimal" autocomplete="off" aria-describedby="aide-coefCalories erreur-coefCalories">
+                <span class="champ__unite">kcal/kg</span>
+              </div>
+              <p id="aide-coefCalories" class="champ__aide">× poids actuel</p>
+              <p id="erreur-coefCalories" class="champ__erreur" hidden><span class="symbole" aria-hidden="true">!</span><span class="champ__erreur-texte"></span></p>
+            </div>
+
+            <div class="champ">
+              <label class="champ__label" for="champ-coef-proteines">Protéines</label>
+              <div class="champ__groupe">
+                <input id="champ-coef-proteines" class="champ__saisie" name="coefProteines" type="text" inputmode="decimal" autocomplete="off" aria-describedby="aide-coefProteines erreur-coefProteines">
+                <span class="champ__unite">g/kg</span>
+              </div>
+              <p id="aide-coefProteines" class="champ__aide">× poids cible</p>
+              <p id="erreur-coefProteines" class="champ__erreur" hidden><span class="symbole" aria-hidden="true">!</span><span class="champ__erreur-texte"></span></p>
+            </div>
+
+            <div class="champ">
+              <label class="champ__label" for="champ-coef-glucides">Glucides</label>
+              <div class="champ__groupe">
+                <input id="champ-coef-glucides" class="champ__saisie" name="coefGlucides" type="text" inputmode="decimal" autocomplete="off" aria-describedby="aide-coefGlucides erreur-coefGlucides">
+                <span class="champ__unite">g/kg</span>
+              </div>
+              <p id="aide-coefGlucides" class="champ__aide">× poids cible</p>
+              <p id="erreur-coefGlucides" class="champ__erreur" hidden><span class="symbole" aria-hidden="true">!</span><span class="champ__erreur-texte"></span></p>
+            </div>
+
+            <div class="champ">
+              <label class="champ__label" for="champ-coef-lipides">Lipides</label>
+              <div class="champ__groupe">
+                <input id="champ-coef-lipides" class="champ__saisie" name="coefLipides" type="text" inputmode="decimal" autocomplete="off" aria-describedby="aide-coefLipides erreur-coefLipides">
+                <span class="champ__unite">g/kg</span>
+              </div>
+              <p id="aide-coefLipides" class="champ__aide">× poids actuel</p>
+              <p id="erreur-coefLipides" class="champ__erreur" hidden><span class="symbole" aria-hidden="true">!</span><span class="champ__erreur-texte"></span></p>
+            </div>
+          </div>
+
+          <button id="bouton-retablir-coefs" class="bouton bouton--secondaire carte__action" type="button">Rétablir les coefficients par défaut</button>
+
+          <h4 class="apercu__titre">Objectifs calculés</h4>
+          <dl class="apercu">
+            <div class="apercu__element">
+              <dt class="apercu__libelle">Calories</dt>
+              <dd class="apercu__valeur"><span id="apercu-calories">—</span> <span class="apercu__unite">kcal</span></dd>
+            </div>
+            <div class="apercu__element">
+              <dt class="apercu__libelle">Protéines</dt>
+              <dd class="apercu__valeur"><span id="apercu-proteines">—</span> <span class="apercu__unite">g</span></dd>
+            </div>
+            <div class="apercu__element">
+              <dt class="apercu__libelle">Glucides</dt>
+              <dd class="apercu__valeur"><span id="apercu-glucides">—</span> <span class="apercu__unite">g</span></dd>
+            </div>
+            <div class="apercu__element">
+              <dt class="apercu__libelle">Lipides</dt>
+              <dd class="apercu__valeur"><span id="apercu-lipides">—</span> <span class="apercu__unite">g</span></dd>
+            </div>
+          </dl>
+          <p id="aide-version-objectifs" class="carte__aide"></p>
+
+          <div class="formulaire">
+            <p id="message-objectifs" class="message" role="status" hidden><span class="message__symbole symbole" aria-hidden="true"></span><span class="message__texte"></span></p>
+            <button id="bouton-enregistrer-objectifs" class="bouton bouton--principal" type="submit" aria-describedby="aide-enregistrer-objectifs" disabled>Enregistrer les objectifs</button>
+            <p id="aide-enregistrer-objectifs" class="champ__aide">Connexion requise pour enregistrer : renseigner Réglages → Connexion.</p>
+          </div>
+        </section>
+      </form>
+
       <section class="carte carte--pleine" aria-labelledby="titre-connexion">
         <div class="carte__entete">
           <h3 id="titre-connexion" class="carte__titre">Connexion</h3>

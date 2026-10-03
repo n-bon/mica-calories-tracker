@@ -1,5 +1,5 @@
 import { ETATS, demarrer, surChangementEtat } from './services/supabase.js';
-import { focaliserConnexion, initialiserReglages } from './vues/reglages.js';
+import { afficherReglages, focaliserConnexion, initialiserReglages } from './vues/reglages.js';
 
 const onglets = document.querySelectorAll('.onglets__onglet');
 const vues = document.querySelectorAll('.vue');
@@ -27,6 +27,7 @@ function afficherVue(idVue) {
   });
 
   window.scrollTo(0, 0);
+  if (idVue === 'vue-reglages') afficherReglages();
 }
 
 function afficherBandeau(etat) {
