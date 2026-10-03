@@ -775,6 +775,16 @@ input.filtres__saisie {
   font-size: var(--t-legende);
 }
 
+/* Ligne de repas dépliée : 1rem au-dessus et au-dessous du texte (lignes cliquables à venir) */
+.historique__tableau .historique__ligne-repas > * {
+  padding-block: 0;
+}
+
+.historique__ligne-repas:not(.historique__ligne-repas--repliee) .historique__contenu {
+  display: block;
+  padding-block: var(--espace-ligne-repas);
+}
+
 /* Ligne repliée : hauteur nulle mais toujours comptée dans la largeur des colonnes,
    pour que le dépliage ne décale rien */
 .historique__ligne-repas--repliee {

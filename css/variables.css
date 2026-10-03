@@ -92,6 +92,7 @@
 
   /* Tableaux */
   --espace-colonnes: 1rem;      /* entre deux colonnes chiffrées */
+  --espace-ligne-repas: 1rem;   /* au-dessus et au-dessous d'une ligne de repas de l'historique */
 
   /* Rayons */
   --r-petit: 7px;
