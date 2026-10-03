@@ -1,6 +1,13 @@
 import { bornesUTC } from '../domaine/dates.js';
 import { obtenirClient } from './supabase.js';
 
+// Incrémenté à chaque écriture de repas : les vues comparent cette valeur pour savoir s'il faut recharger.
+let generation = 0;
+
+export function generationRepas() {
+  return generation;
+}
+
 // Supabase renvoie au plus 1000 lignes par requête : on lit page par page jusqu'à la limite voulue.
 const TAILLE_PAGE = 1000;
 
@@ -33,6 +40,7 @@ export async function ajouterRepas({ typeRepas, nom, prisLe, calories, proteines
     .select()
     .single();
   if (error) throw error;
+  generation += 1;
   return data;
 }
 
@@ -59,4 +67,16 @@ export function lireRepasDePlage(plage) {
       .order('pris_le', { ascending: true })
       .order('id', { ascending: true }),
   );
+}
+
+// Une page de repas, du plus récent au plus ancien (id départage les repas pris au même instant).
+export async function lirePageRepas(debut, taille) {
+  const { data, error } = await obtenirClient()
+    .from('repas')
+    .select('id, type_repas, nom, pris_le, calories, proteines, glucides, lipides')
+    .order('pris_le', { ascending: false })
+    .order('id', { ascending: false })
+    .range(debut, debut + taille - 1);
+  if (error) throw error;
+  return data;
 }

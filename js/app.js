@@ -4,6 +4,7 @@ import { afficherCalendrier, initialiserCalendrier } from './vues/calendrier.js'
 import { afficherCartePoids } from './vues/carte-poids.js';
 import { afficherCarteResultat } from './vues/carte-resultat.js';
 import { initialiserDetail } from './vues/detail-jour.js';
+import { afficherHistorique, initialiserHistorique } from './vues/historique.js';
 import { afficherReglages, focaliserConnexion, initialiserReglages } from './vues/reglages.js';
 import { afficherSaisie, initialiserSaisie } from './vues/saisie.js';
 
@@ -35,6 +36,7 @@ function afficherVue(idVue) {
   window.scrollTo(0, 0);
   if (idVue === 'vue-saisie') afficherSaisie();
   if (idVue === 'vue-calendrier') afficherRecap();
+  if (idVue === 'vue-historique') afficherHistorique();
   if (idVue === 'vue-reglages') afficherReglages();
 }
 
@@ -65,11 +67,13 @@ bandeau.querySelector('.bandeau__lien').addEventListener('click', (evenement) =>
 initialiserSaisie();
 initialiserCalendrier();
 initialiserDetail();
+initialiserHistorique();
 initialiserReglages();
 surChangementEtat(afficherBandeau);
 // Connexion, déconnexion ou changement de compte : les données de synthèse ne sont plus valables.
 surChangementEtat(() => {
   invaliderDonneesRecap();
   if (document.getElementById('vue-calendrier').classList.contains('vue--active')) afficherRecap();
+  if (document.getElementById('vue-historique').classList.contains('vue--active')) afficherHistorique();
 });
 demarrer();

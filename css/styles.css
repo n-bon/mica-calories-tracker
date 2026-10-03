@@ -684,6 +684,119 @@ input.filtres__saisie {
   fill: var(--texte-secondaire);
 }
 
+/* Historique : une ligne par jour renseigné, dépliable sur ses repas */
+.historique {
+  padding-inline: var(--e-h-2);
+}
+
+.historique__etat {
+  padding-inline: var(--e-h-1);
+  color: var(--texte-secondaire);
+}
+
+.historique__tableau {
+  width: 100%;
+  border-collapse: collapse;
+  line-height: var(--i-label);
+}
+
+.historique__tableau th,
+.historique__tableau td {
+  padding: var(--e-1) 0;
+  font-weight: var(--g-normal);
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* Colonnes métriques : largeur minimale, 1rem entre elles, serrées à droite ; la date prend le reste */
+.historique__tableau :is(th, td):not(:first-child) {
+  width: 1%;
+  padding-left: var(--espace-colonnes);
+}
+
+.historique__tableau th[scope="row"],
+.historique__tableau thead th:first-child {
+  text-align: left;
+}
+
+.historique__tableau thead th {
+  color: var(--texte-secondaire);
+  font-size: var(--t-legende);
+}
+
+.historique__tableau abbr {
+  text-decoration: none;
+}
+
+.historique__ligne-jour {
+  border-top: var(--bordure-carte) solid var(--bordure);
+  cursor: pointer;
+}
+
+.historique__ligne-jour > th {
+  padding: 0;
+}
+
+.historique__jour {
+  display: flex;
+  align-items: center;
+  gap: var(--e-h-1);
+  width: 100%;
+  min-height: var(--hauteur-cible);
+  padding: 0;
+  background: none;
+  color: var(--texte);
+  border: none;
+  font-family: inherit;
+  font-size: var(--t-corps);
+  font-weight: var(--g-gras);
+  text-align: left;
+  cursor: pointer;
+}
+
+/* Chevron : pointe à droite replié, vers le bas déplié */
+.historique__jour::before {
+  content: "";
+  flex: none;
+  width: var(--e-1);
+  height: var(--e-1);
+  border-right: var(--epaisseur-chevron) solid var(--texte);
+  border-bottom: var(--epaisseur-chevron) solid var(--texte);
+  transform: rotate(-45deg);
+  transition: transform var(--duree) var(--courbe);
+}
+
+.historique__jour[aria-expanded="true"]::before {
+  transform: rotate(45deg);
+}
+
+.historique__ligne-repas > * {
+  color: var(--texte-secondaire);
+  font-size: var(--t-legende);
+}
+
+/* Ligne repliée : hauteur nulle mais toujours comptée dans la largeur des colonnes,
+   pour que le dépliage ne décale rien */
+.historique__ligne-repas--repliee {
+  visibility: hidden;
+}
+
+.historique__tableau .historique__ligne-repas--repliee > * {
+  padding-block: 0;
+}
+
+.historique__ligne-repas--repliee .historique__contenu {
+  display: block;
+  height: 0;
+  overflow: hidden;
+}
+
+/* Le nom du repas passe à la ligne plutôt que d'élargir la colonne des dates */
+.historique__ligne-repas > th {
+  padding-left: var(--e-h-3);
+  white-space: normal;
+}
+
 /* Panneau de détail d'un jour : feuille montant du bas sur mobile */
 .panneau {
   width: 100%;

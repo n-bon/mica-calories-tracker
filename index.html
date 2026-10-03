@@ -189,6 +189,22 @@
 
     <section id="vue-historique" class="vue" aria-labelledby="titre-historique">
       <h2 id="titre-historique" class="vue__titre">Historique</h2>
+
+      <section class="carte carte--pleine historique" aria-labelledby="titre-historique">
+        <p id="historique-etat" class="historique__etat" role="status" hidden></p>
+        <table id="historique-tableau" class="historique__tableau" hidden>
+          <thead>
+            <tr>
+              <th scope="col">Date</th>
+              <th scope="col"><abbr title="Calories (kcal)">Kcal</abbr></th>
+              <th scope="col"><abbr title="Protéines (g)">Prot.</abbr></th>
+              <th scope="col"><abbr title="Glucides (g)">Gluc.</abbr></th>
+              <th scope="col"><abbr title="Lipides (g)">Lip.</abbr></th>
+            </tr>
+          </thead>
+        </table>
+        <button id="historique-plus" class="bouton bouton--secondaire carte__action" type="button" hidden>Afficher plus</button>
+      </section>
     </section>
 
     <section id="vue-reglages" class="vue" aria-labelledby="titre-reglages">

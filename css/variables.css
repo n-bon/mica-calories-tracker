@@ -90,6 +90,9 @@
   /* Superposition */
   --z-flottant: 10;             /* listes déroulantes au-dessus des cartes suivantes */
 
+  /* Tableaux */
+  --espace-colonnes: 1rem;      /* entre deux colonnes chiffrées */
+
   /* Rayons */
   --r-petit: 7px;
   --r-jour: 14px;
