@@ -26,3 +26,37 @@ export const STATUTS = {
   rouge: 'Hors cible',
   vide: 'Pas de saisie',
 };
+
+// Signification de chaque couleur pour la légende du calendrier, à tenir à jour avec ANCRAGES et SEUILS.
+export const SIGNIFICATIONS = {
+  global: {
+    vert: 'score du jour de 90 % ou plus',
+    orange: 'score de 80 à 90 %',
+    rouge: 'score inférieur à 80 %',
+  },
+  calories: {
+    vert: '90 à 100 % de l’objectif',
+    orange: '80 à 90 %, ou 100 à 105 %',
+    rouge: 'moins de 80 %, ou plus de 105 %',
+  },
+  proteines: {
+    vert: '95 % de l’objectif ou plus',
+    orange: '85 à 95 %',
+    rouge: 'moins de 85 %',
+  },
+  glucides: {
+    vert: '90 à 110 % de l’objectif',
+    orange: '80 à 90 %, ou 110 à 120 %',
+    rouge: 'moins de 80 %, ou plus de 120 %',
+  },
+  lipides: {
+    vert: '90 à 110 % de l’objectif',
+    orange: '80 à 90 %, ou 110 à 120 %',
+    rouge: 'moins de 80 %, ou plus de 120 %',
+  },
+};
+
+export const SIGNIFICATION_VIDE = 'aucun repas saisi, ou aucun objectif en vigueur';
+
+// Durée maximale d'une plage personnalisée du calendrier, en jours.
+export const PLAGE_MAX = 366;

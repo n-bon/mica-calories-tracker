@@ -431,11 +431,6 @@ p {
   padding-inline: var(--e-h-2);
 }
 
-.calendrier > .carte__titre,
-.calendrier > .carte__aide {
-  padding-inline: var(--e-h-1);
-}
-
 .calendrier__etat {
   margin-top: var(--e-2);
   padding-inline: var(--e-h-1);
@@ -494,6 +489,130 @@ p {
   font-size: var(--t-jour);
   font-weight: var(--g-gras);
   line-height: var(--i-jour);
+}
+
+/* Filtres du calendrier : une ligne compacte, au-dessus de la grille */
+.filtres {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--e-1) var(--e-h-2);
+}
+
+.filtres__champ {
+  display: grid;
+  row-gap: var(--e-1);
+  min-width: 0;
+}
+
+.filtres__label {
+  color: var(--texte-secondaire);
+  font-size: var(--t-legende);
+  line-height: var(--i-legende);
+}
+
+/* Listes et dates en 16 px : en dessous, Safari iOS zoome sur le champ */
+.filtres__saisie {
+  width: 100%;
+  min-width: 0;
+  min-height: var(--hauteur-cible);
+  padding: 0 var(--e-h-4) 0 var(--e-h-2);
+  background-color: var(--fond);
+  color: var(--texte);
+  font-family: inherit;
+  font-size: var(--t-corps);
+  line-height: var(--i-label);
+  border: var(--bordure-champ) solid var(--champ-bordure);
+  border-radius: var(--r-petit);
+  appearance: none;
+}
+
+input.filtres__saisie {
+  padding-right: var(--e-h-2);
+}
+
+.filtres__saisie::-webkit-date-and-time-value {
+  text-align: left;
+}
+
+/* Chevron de liste déroulante, dessiné par deux bordures pivotées */
+.selection {
+  position: relative;
+}
+
+.selection::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: var(--e-h-2);
+  width: var(--e-1);
+  height: var(--e-1);
+  border-right: var(--epaisseur-chevron) solid var(--texte);
+  border-bottom: var(--epaisseur-chevron) solid var(--texte);
+  transform: translateY(-75%) rotate(45deg);
+  pointer-events: none;
+}
+
+/* Les dates ne s'affichent qu'avec « Personnalisée » */
+.filtres__personnalisee {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--e-1) var(--e-h-2);
+}
+
+.filtres:not(:has(option[value="personnalisee"]:checked)) .filtres__personnalisee {
+  display: none;
+}
+
+.filtres__personnalisee > .message {
+  grid-column: 1 / -1;
+}
+
+.calendrier__periode {
+  margin-top: 0;
+  padding-inline: var(--e-h-1);
+  font-weight: var(--g-normal);
+}
+
+/* Légende des couleurs du calendrier */
+.legende {
+  display: grid;
+  row-gap: var(--e-1);
+  margin: var(--e-3) 0 0;
+  padding: 0 var(--e-h-1);
+  list-style: none;
+  font-size: var(--t-legende);
+  line-height: var(--i-legende);
+}
+
+.legende__ligne {
+  display: flex;
+  align-items: center;
+  gap: var(--e-h-1);
+}
+
+.pastille {
+  flex: none;
+  width: var(--taille-pastille);
+  height: var(--taille-pastille);
+  border-radius: var(--r-rond);
+}
+
+.pastille--vert {
+  background-color: var(--kpi-vert);
+}
+
+.pastille--orange {
+  background-color: var(--kpi-or);
+}
+
+.pastille--rouge {
+  background-color: var(--kpi-rouge);
+}
+
+.pastille--vide {
+  background-color: var(--vide);
 }
 
 /* Messages système */
@@ -670,7 +789,8 @@ p {
   border-color: var(--action);
 }
 
-.champ__saisie[aria-invalid="true"] {
+.champ__saisie[aria-invalid="true"],
+.filtres__saisie[aria-invalid="true"] {
   border-width: var(--bordure-erreur);
   border-color: var(--action);
 }

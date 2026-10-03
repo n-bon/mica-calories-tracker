@@ -40,3 +40,17 @@ export function plageDerniersJours(nombreJours, aujourdHui = new Date()) {
 export function bornesUTC({ debut, fin }) {
   return { depuis: debutJour(debut).toISOString(), avant: ajouterJours(fin, 1).toISOString() };
 }
+
+// Date locale (minuit) d'une valeur AAAA-MM-JJ, ou null si la valeur est vide ou invalide.
+export function dateDepuisISO(valeur) {
+  const morceaux = /^(\d{4})-(\d{2})-(\d{2})$/.exec(valeur ?? '');
+  if (!morceaux) return null;
+  const [, annee, mois, jour] = morceaux.map(Number);
+  const date = new Date(annee, mois - 1, jour);
+  return date.getDate() === jour ? date : null;
+}
+
+// Nombre de jours d'une plage, bornes incluses (arrondi : un jour de changement d'heure dure 23 ou 25 h).
+export function nombreDeJours({ debut, fin }) {
+  return Math.round((debutJour(fin) - debutJour(debut)) / 86400000) + 1;
+}
