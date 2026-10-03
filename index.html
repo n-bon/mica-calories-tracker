@@ -34,10 +34,158 @@
 
     <section id="vue-saisie" class="vue vue--active" aria-labelledby="titre-saisie">
       <h2 id="titre-saisie" class="vue__titre">Saisie</h2>
+
+      <form id="formulaire-saisie" class="saisie" novalidate>
+        <section class="carte carte--pleine saisie__debut" aria-labelledby="titre-type-repas">
+          <h3 id="titre-type-repas" class="carte__titre">Type de repas</h3>
+          <div class="choix" role="radiogroup" aria-labelledby="titre-type-repas" aria-describedby="erreur-typeRepas">
+            <label class="choix__option"><input class="choix__radio" type="radio" name="typeRepas" value="petit_dejeuner">Petit déjeuner</label>
+            <label class="choix__option"><input class="choix__radio" type="radio" name="typeRepas" value="dejeuner">Déjeuner</label>
+            <label class="choix__option"><input class="choix__radio" type="radio" name="typeRepas" value="collation">Collation</label>
+            <label class="choix__option"><input class="choix__radio" type="radio" name="typeRepas" value="diner">Dîner</label>
+            <label class="choix__option"><input class="choix__radio" type="radio" name="typeRepas" value="boisson">Boisson</label>
+          </div>
+          <p id="erreur-typeRepas" class="champ__erreur" hidden><span class="symbole" aria-hidden="true">!</span><span class="champ__erreur-texte"></span></p>
+        </section>
+
+        <div class="carte carte--pleine formulaire formulaire--sans-marge">
+          <div class="champ">
+            <label class="champ__label" for="champ-nom">Repas pris</label>
+            <div class="combobox">
+              <input id="champ-nom" class="champ__saisie" name="nom" type="text" maxlength="100" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="suggestions-nom" aria-describedby="erreur-nom">
+              <ul id="suggestions-nom" class="suggestions" role="listbox" aria-label="Repas déjà saisis" hidden></ul>
+            </div>
+            <p id="erreur-nom" class="champ__erreur" hidden><span class="symbole" aria-hidden="true">!</span><span class="champ__erreur-texte"></span></p>
+          </div>
+
+          <div class="champ">
+            <label class="champ__label" for="champ-pris-le">Date et heure</label>
+            <input id="champ-pris-le" class="champ__saisie" name="prisLe" type="datetime-local" aria-describedby="erreur-prisLe">
+            <p id="erreur-prisLe" class="champ__erreur" hidden><span class="symbole" aria-hidden="true">!</span><span class="champ__erreur-texte"></span></p>
+          </div>
+        </div>
+
+        <div class="carte carte--demi champ">
+          <label class="champ__label" for="champ-calories">Calories</label>
+          <div class="champ__groupe">
+            <input id="champ-calories" class="champ__saisie" name="calories" type="text" inputmode="decimal" autocomplete="off" aria-describedby="erreur-calories">
+            <span class="champ__unite">kcal</span>
+          </div>
+          <p id="erreur-calories" class="champ__erreur" hidden><span class="symbole" aria-hidden="true">!</span><span class="champ__erreur-texte"></span></p>
+        </div>
+
+        <div class="carte carte--demi champ">
+          <label class="champ__label" for="champ-proteines">Protéines</label>
+          <div class="champ__groupe">
+            <input id="champ-proteines" class="champ__saisie" name="proteines" type="text" inputmode="decimal" autocomplete="off" aria-describedby="erreur-proteines">
+            <span class="champ__unite">g</span>
+          </div>
+          <p id="erreur-proteines" class="champ__erreur" hidden><span class="symbole" aria-hidden="true">!</span><span class="champ__erreur-texte"></span></p>
+        </div>
+
+        <div class="carte carte--demi champ">
+          <label class="champ__label" for="champ-glucides">Glucides</label>
+          <div class="champ__groupe">
+            <input id="champ-glucides" class="champ__saisie" name="glucides" type="text" inputmode="decimal" autocomplete="off" aria-describedby="erreur-glucides">
+            <span class="champ__unite">g</span>
+          </div>
+          <p id="erreur-glucides" class="champ__erreur" hidden><span class="symbole" aria-hidden="true">!</span><span class="champ__erreur-texte"></span></p>
+        </div>
+
+        <div class="carte carte--demi champ">
+          <label class="champ__label" for="champ-lipides">Lipides</label>
+          <div class="champ__groupe">
+            <input id="champ-lipides" class="champ__saisie" name="lipides" type="text" inputmode="decimal" autocomplete="off" aria-describedby="erreur-lipides">
+            <span class="champ__unite">g</span>
+          </div>
+          <p id="erreur-lipides" class="champ__erreur" hidden><span class="symbole" aria-hidden="true">!</span><span class="champ__erreur-texte"></span></p>
+        </div>
+
+        <div id="avertissement-coherence" class="carte carte--pleine avertissement" role="status" hidden>
+          <span class="symbole" aria-hidden="true">!</span>
+          <p class="avertissement__texte"></p>
+        </div>
+
+        <p id="message-saisie" class="message" role="status" hidden><span class="message__symbole symbole" aria-hidden="true"></span><span class="message__texte"></span></p>
+
+        <div class="saisie__pied">
+          <button id="bouton-enregistrer-repas" class="bouton bouton--principal" type="submit" aria-describedby="aide-enregistrer-repas" disabled>Enregistrer</button>
+          <p id="aide-enregistrer-repas" class="champ__aide">Connexion requise pour enregistrer : renseigner Réglages → Connexion.</p>
+        </div>
+      </form>
     </section>
 
     <section id="vue-calendrier" class="vue" aria-labelledby="titre-calendrier">
       <h2 id="titre-calendrier" class="vue__titre">Récap</h2>
+
+      <section id="carte-poids" class="carte carte--demi synthese" aria-labelledby="titre-poids">
+        <h3 id="titre-poids" class="carte__titre">Poids</h3>
+        <p class="synthese__valeur"><span id="poids-valeur">—</span> <span class="synthese__unite">kg</span></p>
+        <div id="poids-graphique" class="synthese__graphique"></div>
+      </section>
+
+      <section id="carte-resultat" class="carte carte--demi synthese" aria-labelledby="titre-resultat">
+        <h3 id="titre-resultat" class="carte__titre">Résultat</h3>
+        <p id="resultat-valeur" class="synthese__valeur">—</p>
+        <div id="resultat-graphique" class="synthese__graphique"></div>
+      </section>
+
+
+      <section class="carte carte--pleine calendrier" aria-labelledby="titre-calendrier-jours">
+        <h3 id="titre-calendrier-jours" class="carte__titre">Objectifs par jour</h3>
+        <form id="formulaire-filtres" class="filtres" novalidate aria-label="Filtres du calendrier">
+          <div class="filtres__champ">
+            <label class="filtres__label" for="filtre-plage">Période</label>
+            <div class="selection">
+              <select id="filtre-plage" class="filtres__saisie" name="plage">
+                <option value="7" selected>7 jours</option>
+                <option value="30">30 jours</option>
+                <option value="90">90 jours</option>
+                <option value="personnalisee">Personnalisée</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="filtres__champ">
+            <label class="filtres__label" for="filtre-metrique">Métrique</label>
+            <div class="selection">
+              <select id="filtre-metrique" class="filtres__saisie" name="metrique">
+                <option value="global" selected>Global</option>
+                <option value="calories">Calories</option>
+                <option value="proteines">Protéines</option>
+                <option value="glucides">Glucides</option>
+                <option value="lipides">Lipides</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="filtres__personnalisee">
+            <div class="filtres__champ">
+              <label class="filtres__label" for="champ-plage-debut">Début</label>
+              <input id="champ-plage-debut" class="filtres__saisie" name="plageDebut" type="date" aria-describedby="erreur-plageDebut">
+              <p id="erreur-plageDebut" class="champ__erreur" hidden><span class="symbole" aria-hidden="true">!</span><span class="champ__erreur-texte"></span></p>
+            </div>
+            <div class="filtres__champ">
+              <label class="filtres__label" for="champ-plage-fin">Fin</label>
+              <input id="champ-plage-fin" class="filtres__saisie" name="plageFin" type="date" aria-describedby="erreur-plageFin">
+              <p id="erreur-plageFin" class="champ__erreur" hidden><span class="symbole" aria-hidden="true">!</span><span class="champ__erreur-texte"></span></p>
+            </div>
+            <p class="message" role="status" hidden><span class="message__symbole symbole" aria-hidden="true"></span><span class="message__texte"></span></p>
+          </div>
+        </form>
+
+        <p id="periode-calendrier" class="carte__aide calendrier__periode"></p>
+        <p id="etat-calendrier" class="calendrier__etat" role="status" hidden></p>
+        <div class="calendrier__entete" aria-hidden="true">
+          <span>lun</span><span>mar</span><span>mer</span><span>jeu</span><span>ven</span><span>sam</span><span>dim</span>
+        </div>
+        <ol id="grille-calendrier" class="calendrier__grille" aria-label="Jours de la période"></ol>
+      </section>
+
+      <section class="legende-bloc" aria-labelledby="titre-legende">
+        <h4 id="titre-legende" class="legende__titre">Légende</h4>
+        <ul id="legende-calendrier" class="legende"></ul>
+      </section>
     </section>
 
     <section id="vue-historique" class="vue" aria-labelledby="titre-historique">
@@ -200,6 +348,33 @@
       </section>
     </section>
   </main>
+
+  <dialog id="detail-jour" class="panneau" aria-labelledby="titre-detail">
+    <div class="panneau__contenu">
+      <h2 id="titre-detail" class="carte__titre"></h2>
+      <p id="detail-statut-global" class="panneau__statut"></p>
+
+      <table id="detail-tableau" class="detail__tableau">
+        <caption class="apercu__titre">Totaux du jour</caption>
+        <thead>
+          <tr>
+            <th scope="col">Métrique</th>
+            <th scope="col">Consommé / objectif</th>
+            <th scope="col">%</th>
+            <th scope="col">Statut</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+
+      <h3 class="apercu__titre">Repas</h3>
+      <ol id="detail-repas" class="detail__liste"></ol>
+      <p id="detail-aucun-repas" class="detail__vide" hidden>Aucun repas saisi ce jour-là.</p>
+    </div>
+    <div class="panneau__pied">
+      <button class="bouton bouton--secondaire panneau__fermer" type="button">Fermer</button>
+    </div>
+  </dialog>
 
   <nav class="onglets" aria-label="Navigation principale">
     <ul class="onglets__liste">

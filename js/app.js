@@ -1,5 +1,11 @@
+import { invaliderDonneesRecap } from './services/donnees-recap.js';
 import { ETATS, demarrer, surChangementEtat } from './services/supabase.js';
+import { afficherCalendrier, initialiserCalendrier } from './vues/calendrier.js';
+import { afficherCartePoids } from './vues/carte-poids.js';
+import { afficherCarteResultat } from './vues/carte-resultat.js';
+import { initialiserDetail } from './vues/detail-jour.js';
 import { afficherReglages, focaliserConnexion, initialiserReglages } from './vues/reglages.js';
+import { afficherSaisie, initialiserSaisie } from './vues/saisie.js';
 
 const onglets = document.querySelectorAll('.onglets__onglet');
 const vues = document.querySelectorAll('.vue');
@@ -27,7 +33,15 @@ function afficherVue(idVue) {
   });
 
   window.scrollTo(0, 0);
+  if (idVue === 'vue-saisie') afficherSaisie();
+  if (idVue === 'vue-calendrier') afficherRecap();
   if (idVue === 'vue-reglages') afficherReglages();
+}
+
+function afficherRecap() {
+  afficherCartePoids();
+  afficherCarteResultat();
+  afficherCalendrier();
 }
 
 function afficherBandeau(etat) {
@@ -48,6 +62,14 @@ bandeau.querySelector('.bandeau__lien').addEventListener('click', (evenement) =>
   focaliserConnexion();
 });
 
+initialiserSaisie();
+initialiserCalendrier();
+initialiserDetail();
 initialiserReglages();
 surChangementEtat(afficherBandeau);
+// Connexion, déconnexion ou changement de compte : les données de synthèse ne sont plus valables.
+surChangementEtat(() => {
+  invaliderDonneesRecap();
+  if (document.getElementById('vue-calendrier').classList.contains('vue--active')) afficherRecap();
+});
 demarrer();

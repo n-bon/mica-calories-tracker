@@ -77,6 +77,19 @@
   --taille-symbole: 1.3125rem;  /* 21 px : cercle des symboles « ! » et « ✓ » */
   --taille-pastille: 0.875rem;  /* 14 px : pastille de statut */
 
+  /* États */
+  --opacite-chargement: 0.5;    /* grille en cours de rechargement */
+
+  /* Petites courbes des cartes de synthèse */
+  --trait-graphique: 1.5px;
+
+  /* Panneau de détail (feuille montant du bas) */
+  --hauteur-panneau: 80dvh;
+  --voile: rgb(3 15 37 / 40%);  /* --texte à 40 % derrière le panneau */
+
+  /* Superposition */
+  --z-flottant: 10;             /* listes déroulantes au-dessus des cartes suivantes */
+
   /* Rayons */
   --r-petit: 7px;
   --r-jour: 14px;
@@ -90,6 +103,7 @@
   --bordure-secondaire: 1.5px;
   --bordure-erreur: 2px;
   --bordure-jour-courant: 3px;
+  --epaisseur-chevron: 2px;
   --contour-focus: 3px;
   --decalage-focus: 3px;
 
