@@ -6,3 +6,11 @@ export const MODES = {
     coefs: { calories: 26, proteines: 2.2, glucides: 2.5, lipides: 0.9 },
   },
 };
+
+export const TYPES_REPAS = {
+  petit_dejeuner: 'Petit déjeuner',
+  dejeuner: 'Déjeuner',
+  collation: 'Collation',
+  diner: 'Dîner',
+  boisson: 'Boisson',
+};

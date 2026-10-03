@@ -7,7 +7,8 @@ import {
   nombreDeJours,
   plageDerniersJours,
 } from '../domaine/dates.js';
-import { couleur, scoreJour } from '../domaine/scoring.js';
+import { statutDuJour } from '../domaine/scoring.js';
+import { ouvrirDetail } from './detail-jour.js';
 import { lireVersions } from '../services/objectifs.js';
 import { lireRepasDePlage } from '../services/repas.js';
 import { ETATS, lireEtat } from '../services/supabase.js';
@@ -51,17 +52,8 @@ function afficherEtat(texte) {
   etat.hidden = !texte;
 }
 
-// Couleur et libellé d'un jour pour la métrique active.
-function statutDuJour(jour) {
-  if (!jour.totaux) return { couleur: 'vide', libelle: STATUTS.vide };
-  if (jour.sansObjectif) return { couleur: 'vide', libelle: 'Sans objectif' };
-  const score = scoreJour(jour.totaux, jour.objectifs);
-  const teinte = couleur(score?.[metrique]?.ecart ?? null);
-  return { couleur: teinte, libelle: STATUTS[teinte] };
-}
-
 function creerCase(jour, estPremiere, cleAujourdhui) {
-  const { couleur: teinte, libelle } = statutDuJour(jour);
+  const { couleur: teinte, libelle } = statutDuJour(jour, metrique);
   const cellule = document.createElement('li');
   const bouton = document.createElement('button');
   bouton.type = 'button';
@@ -215,6 +207,11 @@ function surChoixMetrique(value) {
 }
 
 export function initialiserCalendrier() {
+  grille.addEventListener('click', ({ target }) => {
+    const bouton = target.closest('.calendrier__case');
+    const jour = bouton && jours.find(({ cle }) => cle === bouton.dataset.jour);
+    if (jour) ouvrirDetail(jour);
+  });
   formFiltres.addEventListener('change', ({ target }) => {
     if (target.name === 'plage') surChoixPlage(target.value);
     else if (target.name === 'metrique') surChoixMetrique(target.value);

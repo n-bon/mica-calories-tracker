@@ -16,3 +16,9 @@ export function formaterNombre(nombre, decimales = 1, { groupement = true } = {}
     useGrouping: groupement,
   }).format(nombre);
 }
+
+// Résumé des quatre valeurs d'un repas ou d'une journée : « 520 kcal · P 40 g · G 60 g · L 10 g ».
+export function formaterMacros({ calories, proteines, glucides, lipides }) {
+  const f = (valeur) => formaterNombre(Number(valeur), 1);
+  return `${f(calories)} kcal · P ${f(proteines)} g · G ${f(glucides)} g · L ${f(lipides)} g`;
+}

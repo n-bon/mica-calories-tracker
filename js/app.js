@@ -1,5 +1,6 @@
 import { ETATS, demarrer, surChangementEtat } from './services/supabase.js';
 import { afficherCalendrier, initialiserCalendrier } from './vues/calendrier.js';
+import { initialiserDetail } from './vues/detail-jour.js';
 import { afficherReglages, focaliserConnexion, initialiserReglages } from './vues/reglages.js';
 import { afficherSaisie, initialiserSaisie } from './vues/saisie.js';
 
@@ -54,6 +55,7 @@ bandeau.querySelector('.bandeau__lien').addEventListener('click', (evenement) =>
 
 initialiserSaisie();
 initialiserCalendrier();
+initialiserDetail();
 initialiserReglages();
 surChangementEtat(afficherBandeau);
 surChangementEtat(() => {

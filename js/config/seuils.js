@@ -27,6 +27,9 @@ export const STATUTS = {
   vide: 'Pas de saisie',
 };
 
+// Jour avec repas mais antérieur à toute version d'objectifs : affiché en gris.
+export const LIBELLE_SANS_OBJECTIF = 'Sans objectif';
+
 // Signification de chaque couleur pour la légende du calendrier, à tenir à jour avec ANCRAGES et SEUILS.
 export const SIGNIFICATIONS = {
   global: {

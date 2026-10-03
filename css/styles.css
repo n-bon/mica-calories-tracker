@@ -615,6 +615,118 @@ input.filtres__saisie {
   background-color: var(--vide);
 }
 
+/* Panneau de détail d'un jour : feuille montant du bas sur mobile */
+.panneau {
+  width: 100%;
+  max-width: var(--largeur-contenu);
+  height: var(--hauteur-panneau);
+  max-height: none;
+  margin: auto auto 0;
+  padding: 0;
+  background-color: var(--carte);
+  color: var(--texte);
+  border: none;
+  border-radius: var(--r-carte) var(--r-carte) 0 0;
+}
+
+.panneau[open] {
+  display: flex;
+  flex-direction: column;
+  animation: monter var(--duree) var(--courbe);
+}
+
+.panneau::backdrop {
+  background-color: var(--voile);
+}
+
+/* Le contenu défile ; le bouton Fermer reste toujours visible en bas */
+.panneau__contenu {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--e-4) calc(var(--e-h-3) + env(safe-area-inset-right)) var(--e-2) calc(var(--e-h-3) + env(safe-area-inset-left));
+}
+
+.panneau__statut {
+  margin-top: var(--e-1);
+  font-weight: var(--g-gras);
+}
+
+.panneau__pied {
+  display: grid;
+  padding: var(--e-2) calc(var(--e-h-3) + env(safe-area-inset-right)) calc(var(--e-2) + env(safe-area-inset-bottom)) calc(var(--e-h-3) + env(safe-area-inset-left));
+  border-top: var(--bordure-carte) solid var(--bordure);
+}
+
+.statut {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e-h-1);
+}
+
+.detail__tableau {
+  width: 100%;
+  margin-top: var(--e-3);
+  border-collapse: collapse;
+  font-size: var(--t-legende);
+  line-height: var(--i-legende);
+}
+
+.detail__tableau caption {
+  margin-top: 0;
+  text-align: left;
+}
+
+.detail__tableau th,
+.detail__tableau td {
+  padding: var(--e-1) var(--e-h-1) var(--e-1) 0;
+  text-align: left;
+  vertical-align: middle;
+}
+
+/* Seule la colonne « Consommé / objectif » peut passer à la ligne */
+.detail__tableau tbody > tr > :not(:nth-child(2)) {
+  white-space: nowrap;
+}
+
+.detail__tableau thead th {
+  color: var(--texte-secondaire);
+  font-weight: var(--g-normal);
+}
+
+.detail__tableau tbody tr + tr > * {
+  border-top: var(--bordure-carte) solid var(--bordure);
+}
+
+.detail__liste {
+  display: grid;
+  row-gap: var(--e-2);
+  margin: var(--e-2) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.detail__repas {
+  display: grid;
+}
+
+.detail__heure,
+.detail__valeurs {
+  color: var(--texte-secondaire);
+  font-size: var(--t-legende);
+  line-height: var(--i-legende);
+}
+
+.detail__vide {
+  margin-top: var(--e-2);
+  color: var(--texte-secondaire);
+}
+
+@keyframes monter {
+  from {
+    transform: translateY(100%);
+  }
+}
+
 /* Messages système */
 .message {
   display: flex;
@@ -855,6 +967,11 @@ input.filtres__saisie {
   .apercu,
   .saisie {
     grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .panneau {
+    margin: auto;
+    border-radius: var(--r-carte);
   }
 
   .formulaire__actions {

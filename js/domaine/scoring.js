@@ -1,4 +1,11 @@
-import { ANCRAGES, ECART_MAX, METRIQUES, SEUILS } from '../config/seuils.js';
+import {
+  ANCRAGES,
+  ECART_MAX,
+  LIBELLE_SANS_OBJECTIF,
+  METRIQUES,
+  SEUILS,
+  STATUTS,
+} from '../config/seuils.js';
 import { arrondir } from '../utils/nombres.js';
 
 // Arrondi au millionième : évite qu'une erreur de virgule flottante fasse basculer un seuil
@@ -55,4 +62,12 @@ export function scoreJour(totaux, objectifs) {
 export function scoreRealisation(ecartGlobal) {
   if (ecartGlobal === null || !Number.isFinite(ecartGlobal)) return null;
   return Math.max(0, arrondir(100 - ecartGlobal * 100, PRECISION - 2));
+}
+
+// Couleur et libellé d'un jour agrégé (domaine/agregation.js) pour une métrique ou le global.
+export function statutDuJour(jour, metrique) {
+  if (!jour.totaux) return { couleur: 'vide', libelle: STATUTS.vide };
+  if (jour.sansObjectif) return { couleur: 'vide', libelle: LIBELLE_SANS_OBJECTIF };
+  const teinte = couleur(scoreJour(jour.totaux, jour.objectifs)?.[metrique]?.ecart ?? null);
+  return { couleur: teinte, libelle: STATUTS[teinte] };
 }

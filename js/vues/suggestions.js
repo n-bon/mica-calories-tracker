@@ -1,6 +1,6 @@
 import { ajouterAuIndex, chercherSuggestions, creerIndex } from '../domaine/suggestions.js';
 import { lireRepasPourSuggestions } from '../services/repas.js';
-import { formaterNombre } from '../utils/nombres.js';
+import { formaterMacros } from '../utils/nombres.js';
 
 /* Index partagé par la saisie et (plus tard) la modification des repas */
 
@@ -28,11 +28,6 @@ export function indexerRepas(repas) {
 }
 
 /* Liste de suggestions (motif combobox ARIA) */
-
-function decrireValeurs({ calories, proteines, glucides, lipides }) {
-  const g = (valeur) => formaterNombre(valeur, 1);
-  return `${g(calories)} kcal · P ${g(proteines)} g · G ${g(glucides)} g · L ${g(lipides)} g`;
-}
 
 export function attacherSuggestions(champ, liste, { surSelection, surFocus }) {
   let resultats = [];
@@ -86,7 +81,7 @@ export function attacherSuggestions(champ, liste, { surSelection, surFocus }) {
       nom.textContent = entree.nom;
       const valeurs = document.createElement('span');
       valeurs.className = 'suggestions__valeurs';
-      valeurs.textContent = decrireValeurs(entree.valeurs);
+      valeurs.textContent = formaterMacros(entree.valeurs);
       option.append(nom, valeurs);
 
       // Empêche le champ de perdre le focus (et la liste de se fermer) avant le clic.

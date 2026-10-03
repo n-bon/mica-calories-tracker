@@ -331,6 +331,33 @@
     </section>
   </main>
 
+  <dialog id="detail-jour" class="panneau" aria-labelledby="titre-detail">
+    <div class="panneau__contenu">
+      <h2 id="titre-detail" class="carte__titre"></h2>
+      <p id="detail-statut-global" class="panneau__statut"></p>
+
+      <table id="detail-tableau" class="detail__tableau">
+        <caption class="apercu__titre">Totaux du jour</caption>
+        <thead>
+          <tr>
+            <th scope="col">Métrique</th>
+            <th scope="col">Consommé / objectif</th>
+            <th scope="col">%</th>
+            <th scope="col">Statut</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+
+      <h3 class="apercu__titre">Repas</h3>
+      <ol id="detail-repas" class="detail__liste"></ol>
+      <p id="detail-aucun-repas" class="detail__vide" hidden>Aucun repas saisi ce jour-là.</p>
+    </div>
+    <div class="panneau__pied">
+      <button class="bouton bouton--secondaire panneau__fermer" type="button">Fermer</button>
+    </div>
+  </dialog>
+
   <nav class="onglets" aria-label="Navigation principale">
     <ul class="onglets__liste">
       <li><a class="onglets__onglet onglets__onglet--actif" href="#vue-saisie" aria-current="page">Saisie</a></li>
