@@ -1,34 +1,48 @@
 # MICA
-Moniteur d'indicateurs clés alimentaires
+Mes indicateurs clés alimentaires
 
-## Utiliser Mica avec son propre compte
+Saisie des repas (calories, protéines, glucides, lipides), objectifs calculés depuis le poids, calendrier coloré selon l'atteinte des objectifs.
 
-Mica stocke les données dans **votre** projet Supabase (offre gratuite). Comptez environ 10 minutes.
+PWA en HTML, CSS et JavaScript natifs, hébergée sur GitHub Pages. Données dans votre propre projet Supabase.
 
-### 1. Créer le projet Supabase
-1. Créer un compte sur [supabase.com](https://supabase.com).
-2. **New project** : choisir un nom, un mot de passe de base de données (il ne sert pas dans Mica) et une région proche. Attendre la fin de la création.
+## Déployer sa propre instance
 
-### 2. Créer les tables
-1. Ouvrir **SQL Editor**, puis **New query**.
-2. Coller le contenu de [`sql/schema.sql`](sql/schema.sql) et cliquer sur **Run**.
+### 1. Forker le dépôt et activer GitHub Pages
+1. **Fork** du dépôt sur GitHub.
+2. Dans le fork : **Settings → Pages → Build and deployment**, source **Deploy from a branch**, branche `main`, dossier `/ (root)`, **Save**.
+3. L'app est publiée sous `https://<utilisateur>.github.io/<dépôt>/`.
 
-### 3. Créer son utilisateur
-1. **Authentication → Users → Add user → Create new user**.
-2. Saisir un email et un mot de passe, cocher **Auto Confirm User**, puis valider.
-3. **Authentication → Sign In / Providers** : désactiver **Allow new users to sign up**, pour que personne d'autre ne puisse créer de compte.
+### 2. Créer un projet Supabase
+1. Compte sur [supabase.com](https://supabase.com), offre gratuite.
+2. **New project** : nom, mot de passe de base de données (non utilisé par Mica), région proche.
 
-### 4. Noter les identifiants
-| Élément | Où le trouver | Format |
-|---|---|---|
-| URL du projet | **Project Settings → Data API** | `https://xxxx.supabase.co` |
-| Clé publishable | **Project Settings → API Keys** | `sb_publishable_…` |
-| Email et mot de passe | Ceux de l'étape 3 | — |
+### 3. Créer les tables
+**SQL Editor → New query**, coller [`sql/schema.sql`](sql/schema.sql), **Run**.
 
-> N'utilisez jamais la clé `sb_secret_…` : elle contourne la protection des données.
+### 4. Créer son utilisateur
+1. **Authentication → Users → Add user → Create new user** : email, mot de passe, cocher **Auto Confirm User**.
+2. **Authentication → Sign In / Providers** : désactiver **Allow new users to sign up**.
 
 ### 5. Se connecter dans Mica
-1. Ouvrir Mica : onglet **Réglages**, carte **Connexion**.
-2. Saisir l'URL, la clé publishable, l'email et le mot de passe, puis **Se connecter**.
+Ouvrir l'app, **Réglages → Connexion** :
 
-L'URL, la clé et l'email restent enregistrés sur l'appareil, mais le mot de passe ne l'est jamais. La session reste ouverte : il n'est pas nécessaire de se reconnecter à chaque ouverture.
+| Champ | Où le trouver dans Supabase |
+|---|---|
+| URL du projet (`https://xxxx.supabase.co`) | **Project Settings → Data API** |
+| Clé publishable (`sb_publishable_…`) | **Project Settings → API Keys** |
+| Email et mot de passe | Utilisateur créé à l'étape 4 |
+
+Le mot de passe n'est pas conservé sur l'appareil ; la session reste ouverte.
+
+### 6. Ajouter l'app à l'écran d'accueil
+Safari sur iPhone : **Partager → Sur l'écran d'accueil**.
+
+## À savoir
+
+- **Clé secret** : ne jamais utiliser la clé `sb_secret_…`, ni dans l'app ni dans le dépôt. Elle contourne la protection des données (RLS).
+- **Offre gratuite Supabase** : un projet sans activité pendant une semaine est mis en pause. Les données sont conservées. Réactivation : tableau de bord Supabase → projet → **Restore project**.
+- **Mise à jour du code** : après chaque déploiement, incrémenter `VERSION` dans [`sw.js`](sw.js) (`mica-v2` → `mica-v3`), sinon les appareils gardent l'ancienne version en cache.
+
+## Licence
+
+Voir [LICENSE](LICENSE).
