@@ -1,6 +1,7 @@
 import { dateHeureLocaleISO } from '../domaine/dates.js';
 import { invaliderDonneesRecap } from '../services/donnees-recap.js';
 import { ajouterRepas } from '../services/repas.js';
+import { estEnLigne, surChangementReseau } from '../services/reseau.js';
 import { ETATS, lireEtat, surChangementEtat } from '../services/supabase.js';
 import { afficherMessage, effacerErreurs, messageErreurSupabase, signalerErreurs } from './formulaire.js';
 import { creerFormulaireRepas } from './formulaire-repas.js';
@@ -14,11 +15,13 @@ let repas = null;
 let envoiEnCours = false;
 let dateModifiee = false;
 
+// Hors connexion, le bandeau en haut de l'écran explique pourquoi le bouton est désactivé.
 function mettreAJourBouton() {
   const connecte = lireEtat() === ETATS.connecte;
+  const enLigne = estEnLigne();
   const complet = repas.estComplet();
-  bouton.disabled = !connecte || !complet || envoiEnCours;
-  aideBouton.hidden = connecte && complet;
+  bouton.disabled = !connecte || !enLigne || !complet || envoiEnCours;
+  aideBouton.hidden = !enLigne || (connecte && complet);
   aideBouton.textContent = connecte
     ? 'Renseigner tous les champs pour enregistrer.'
     : 'Connexion requise pour enregistrer : renseigner Réglages → Connexion.';
@@ -76,4 +79,5 @@ export function initialiserSaisie() {
     if (target.name === 'prisLe') dateModifiee = true;
   });
   surChangementEtat(surChangementConnexion);
+  surChangementReseau(mettreAJourBouton);
 }

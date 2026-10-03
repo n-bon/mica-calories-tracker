@@ -85,6 +85,18 @@ p {
   height: var(--taille-logo);
 }
 
+/* Bandeau hors connexion : pleine largeur, fond --texte (design § 2.4) */
+.bandeau-reseau {
+  margin: 0 0 var(--e-2);
+  max-width: none;
+  padding: var(--e-1) calc(var(--e-h-2) + env(safe-area-inset-right)) var(--e-1) calc(var(--e-h-2) + env(safe-area-inset-left));
+  background-color: var(--texte);
+  color: var(--texte-inverse);
+  font-size: var(--t-legende);
+  line-height: var(--i-legende);
+  text-align: center;
+}
+
 /* Réserve la place de la barre d'onglets fixe */
 .principal {
   padding-bottom: calc(var(--hauteur-cible) + 2 * var(--e-1) + var(--e-4) + env(safe-area-inset-bottom));

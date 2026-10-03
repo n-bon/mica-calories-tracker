@@ -1,6 +1,6 @@
 // Mica — service worker : met en cache le shell de l'app (HTML, CSS, JS, vendor, icônes).
 // Après un déploiement, incrémenter VERSION suffit : le nouveau cache remplace l'ancien.
-const VERSION = 'mica-v1';
+const VERSION = 'mica-v2';
 
 const SHELL = [
   './',
@@ -27,6 +27,7 @@ const SHELL = [
   './js/services/donnees-recap.js',
   './js/services/objectifs.js',
   './js/services/repas.js',
+  './js/services/reseau.js',
   './js/services/stockage-local.js',
   './js/services/supabase.js',
   './js/utils/export.js',
