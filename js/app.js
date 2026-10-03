@@ -80,3 +80,10 @@ surChangementEtat(() => {
   if (document.getElementById('vue-historique').classList.contains('vue--active')) afficherHistorique();
 });
 demarrer();
+
+// Chemin relatif : le service worker couvre le sous-chemin GitHub Pages du dépôt.
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./sw.js').catch(() => {
+    // Sans service worker (navigation privée, file://), l'app fonctionne normalement en ligne.
+  });
+}
