@@ -1,8 +1,9 @@
 {
-  "name": "Mica",
+  "name": "Mica — Mes indicateurs clés alimentaires",
   "short_name": "Mica",
   "lang": "fr",
   "start_url": "./",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#fffffc",
   "theme_color": "#fffffc",

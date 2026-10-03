@@ -20,9 +20,8 @@
 </head>
 <body>
   <header class="entete">
-    <h1 class="entete__titre">
-      <img class="entete__logo" src="./icons/logo.png" alt="Mica" width="848" height="911">
-    </h1>
+    <img class="entete__logo" src="./icons/logo.png" alt="Mica" width="848" height="911">
+    <h1 class="entete__titre">Mica</h1>
   </header>
 
   <main class="principal">
@@ -190,6 +189,23 @@
 
     <section id="vue-historique" class="vue" aria-labelledby="titre-historique">
       <h2 id="titre-historique" class="vue__titre">Historique</h2>
+
+      <section class="carte carte--pleine historique" aria-labelledby="titre-historique">
+        <p id="historique-message" class="message historique__message" role="status" hidden><span class="message__symbole symbole" aria-hidden="true"></span><span class="message__texte"></span></p>
+        <p id="historique-etat" class="historique__etat" role="status" hidden></p>
+        <table id="historique-tableau" class="historique__tableau" hidden>
+          <thead>
+            <tr>
+              <th scope="col">Date</th>
+              <th scope="col"><abbr title="Calories (kcal)">Kcal</abbr></th>
+              <th scope="col"><abbr title="Protéines (g)">Prot.</abbr></th>
+              <th scope="col"><abbr title="Glucides (g)">Gluc.</abbr></th>
+              <th scope="col"><abbr title="Lipides (g)">Lip.</abbr></th>
+            </tr>
+          </thead>
+        </table>
+        <button id="historique-plus" class="bouton bouton--secondaire carte__action" type="button" hidden>Afficher plus</button>
+      </section>
     </section>
 
     <section id="vue-reglages" class="vue" aria-labelledby="titre-reglages">
@@ -333,8 +349,7 @@
 
           <div class="champ">
             <label class="champ__label" for="champ-mot-de-passe">Mot de passe</label>
-            <input id="champ-mot-de-passe" class="champ__saisie" name="motDePasse" type="password" autocomplete="current-password" aria-describedby="aide-motDePasse erreur-motDePasse">
-            <p id="aide-motDePasse" class="champ__aide">Sert uniquement à ouvrir la session, jamais conservé sur l’appareil.</p>
+            <input id="champ-mot-de-passe" class="champ__saisie" name="motDePasse" type="password" autocomplete="current-password" aria-describedby="erreur-motDePasse">
             <p id="erreur-motDePasse" class="champ__erreur" hidden><span class="symbole" aria-hidden="true">!</span><span class="champ__erreur-texte"></span></p>
           </div>
 
@@ -345,6 +360,18 @@
             <button id="bouton-deconnecter" class="bouton bouton--secondaire" type="button" disabled>Se déconnecter</button>
           </div>
         </form>
+      </section>
+
+      <section id="carte-export" class="carte carte--pleine" aria-labelledby="titre-export">
+        <h3 id="titre-export" class="carte__titre">Export</h3>
+        <p class="carte__aide">Exporter tout l'historique des repas saisis</p>
+        <div class="formulaire">
+          <p class="message" role="status" hidden><span class="message__symbole symbole" aria-hidden="true"></span><span class="message__texte"></span></p>
+          <div class="formulaire__actions">
+            <button id="bouton-export-json" class="bouton bouton--secondaire" type="button" disabled>Exporter en JSON</button>
+            <button id="bouton-export-csv" class="bouton bouton--secondaire" type="button" disabled>Exporter en CSV</button>
+          </div>
+        </div>
       </section>
     </section>
   </main>
@@ -373,6 +400,25 @@
     </div>
     <div class="panneau__pied">
       <button class="bouton bouton--secondaire panneau__fermer" type="button">Fermer</button>
+    </div>
+  </dialog>
+
+  <dialog id="edition-repas" class="panneau" aria-labelledby="titre-edition">
+    <div id="edition-contenu" class="panneau__contenu">
+      <h2 id="titre-edition" class="carte__titre panneau__titre">Modifier le repas</h2>
+    </div>
+    <div class="panneau__pied panneau__pied--actions">
+      <button id="edition-enregistrer" class="bouton bouton--principal" type="submit" form="edition-formulaire-saisie">Enregistrer les modifications</button>
+      <button id="edition-supprimer" class="bouton bouton--secondaire" type="button">Supprimer</button>
+      <button id="edition-annuler" class="bouton bouton--secondaire" type="button">Annuler</button>
+    </div>
+  </dialog>
+
+  <dialog id="confirmation-suppression" class="confirmation" aria-labelledby="confirmation-texte">
+    <p id="confirmation-texte" class="confirmation__texte"></p>
+    <div class="confirmation__actions">
+      <button id="confirmation-supprimer" class="bouton bouton--principal" type="button">Supprimer</button>
+      <button id="confirmation-annuler" class="bouton bouton--secondaire" type="button">Annuler</button>
     </div>
   </dialog>
 

@@ -1,6 +1,13 @@
 import { bornesUTC } from '../domaine/dates.js';
 import { obtenirClient } from './supabase.js';
 
+// Incrémenté à chaque écriture de repas : les vues comparent cette valeur pour savoir s'il faut recharger.
+let generation = 0;
+
+export function generationRepas() {
+  return generation;
+}
+
 // Supabase renvoie au plus 1000 lignes par requête : on lit page par page jusqu'à la limite voulue.
 const TAILLE_PAGE = 1000;
 
@@ -18,21 +25,14 @@ async function lireParPages(requete, limite = Infinity) {
 }
 
 // pris_le est envoyé en ISO UTC : l'instant reste exact quel que soit le fuseau de l'appareil.
-export async function ajouterRepas({ typeRepas, nom, prisLe, calories, proteines, glucides, lipides }) {
+export async function ajouterRepas(valeurs) {
   const { data, error } = await obtenirClient()
     .from('repas')
-    .insert({
-      type_repas: typeRepas,
-      nom,
-      pris_le: prisLe.toISOString(),
-      calories,
-      proteines,
-      glucides,
-      lipides,
-    })
+    .insert(versLigne(valeurs))
     .select()
     .single();
   if (error) throw error;
+  generation += 1;
   return data;
 }
 
@@ -56,6 +56,52 @@ export function lireRepasDePlage(plage) {
       .select('id, type_repas, nom, pris_le, calories, proteines, glucides, lipides')
       .gte('pris_le', depuis)
       .lt('pris_le', avant)
+      .order('pris_le', { ascending: true })
+      .order('id', { ascending: true }),
+  );
+}
+
+// Une page de repas, du plus récent au plus ancien (id départage les repas pris au même instant).
+export async function lirePageRepas(debut, taille) {
+  const { data, error } = await obtenirClient()
+    .from('repas')
+    .select('id, type_repas, nom, pris_le, calories, proteines, glucides, lipides')
+    .order('pris_le', { ascending: false })
+    .order('id', { ascending: false })
+    .range(debut, debut + taille - 1);
+  if (error) throw error;
+  return data;
+}
+
+function versLigne({ typeRepas, nom, prisLe, calories, proteines, glucides, lipides }) {
+  return { type_repas: typeRepas, nom, pris_le: prisLe.toISOString(), calories, proteines, glucides, lipides };
+}
+
+// modifie_le est renseigné en base par le trigger repas_maj_modifie_le.
+export async function modifierRepas(id, valeurs) {
+  const { data, error } = await obtenirClient()
+    .from('repas')
+    .update(versLigne(valeurs))
+    .eq('id', id)
+    .select()
+    .single();
+  if (error) throw error;
+  generation += 1;
+  return data;
+}
+
+export async function supprimerRepas(id) {
+  const { error } = await obtenirClient().from('repas').delete().eq('id', id);
+  if (error) throw error;
+  generation += 1;
+}
+
+// Toutes les lignes de la table repas (toutes colonnes), du plus ancien au plus récent : sauvegarde complète.
+export function lireTousLesRepas() {
+  return lireParPages(
+    () => obtenirClient()
+      .from('repas')
+      .select('*')
       .order('pris_le', { ascending: true })
       .order('id', { ascending: true }),
   );

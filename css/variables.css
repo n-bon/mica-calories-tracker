@@ -76,6 +76,7 @@
   --taille-logo: 2.5rem;        /* 56 px */
   --taille-symbole: 1.3125rem;  /* 21 px : cercle des symboles « ! » et « ✓ » */
   --taille-pastille: 0.875rem;  /* 14 px : pastille de statut */
+  --cible-icone: 1.5rem;        /* 24 px : cible tactile minimale WCAG 2.2 AA d'un bouton icône */
 
   /* États */
   --opacite-chargement: 0.5;    /* grille en cours de rechargement */
@@ -89,6 +90,10 @@
 
   /* Superposition */
   --z-flottant: 10;             /* listes déroulantes au-dessus des cartes suivantes */
+
+  /* Tableaux */
+  --espace-colonnes: 1rem;      /* entre deux colonnes chiffrées */
+  --espace-ligne-repas: 1rem;   /* au-dessus et au-dessous d'une ligne de repas de l'historique */
 
   /* Rayons */
   --r-petit: 7px;

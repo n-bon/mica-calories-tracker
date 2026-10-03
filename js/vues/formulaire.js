@@ -1,4 +1,5 @@
-// Chaque champ « nom » a une zone d'erreur #erreur-nom, et chaque formulaire une zone de message .message.
+// Chaque champ « nom » désigne sa zone d'erreur (…erreur-nom) dans son aria-describedby,
+// et chaque formulaire a une zone de message .message.
 
 // Élément qui porte l'état d'erreur : le champ lui-même, ou le conteneur radiogroup d'un groupe de boutons radio.
 function cibleChamp(formulaire, nom) {
@@ -11,8 +12,14 @@ export function focaliserChamp(formulaire, nom) {
   (champ instanceof RadioNodeList ? champ[0] : champ).focus();
 }
 
+function zoneErreur(formulaire, nom) {
+  const references = cibleChamp(formulaire, nom).getAttribute('aria-describedby') ?? '';
+  const id = references.split(/\s+/).find((reference) => reference.endsWith(`erreur-${nom}`));
+  return document.getElementById(id);
+}
+
 export function afficherErreurChamp(formulaire, nom, texte) {
-  const zone = document.getElementById(`erreur-${nom}`);
+  const zone = zoneErreur(formulaire, nom);
   zone.querySelector('.champ__erreur-texte').textContent = texte;
   zone.hidden = false;
   cibleChamp(formulaire, nom).setAttribute('aria-invalid', 'true');
@@ -20,7 +27,7 @@ export function afficherErreurChamp(formulaire, nom, texte) {
 
 export function effacerErreurs(formulaire, noms) {
   noms.forEach((nom) => {
-    document.getElementById(`erreur-${nom}`).hidden = true;
+    zoneErreur(formulaire, nom).hidden = true;
     cibleChamp(formulaire, nom).removeAttribute('aria-invalid');
   });
   formulaire.querySelector('.message').hidden = true;
@@ -54,4 +61,18 @@ export function messageErreurSupabase(erreur, action, table) {
     return `${action} impossible : table ${table} introuvable. Exécuter sql/schema.sql dans l’éditeur SQL de Supabase.`;
   }
   return `${action} impossible : ${erreur.message}`;
+}
+
+// Copie d'un fragment de HTML avec des identifiants préfixés (et les références qui les citent),
+// pour réutiliser un formulaire existant sans dupliquer son HTML.
+export function clonerAvecPrefixe(element, prefixe) {
+  const copie = element.cloneNode(true);
+  [copie, ...copie.querySelectorAll('*')].forEach((noeud) => {
+    if (noeud.id) noeud.id = `${prefixe}${noeud.id}`;
+    ['for', 'aria-describedby', 'aria-controls', 'aria-labelledby'].forEach((attribut) => {
+      const valeur = noeud.getAttribute(attribut);
+      if (valeur) noeud.setAttribute(attribut, valeur.split(/\s+/).map((id) => `${prefixe}${id}`).join(' '));
+    });
+  });
+  return copie;
 }

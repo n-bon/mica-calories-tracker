@@ -1,7 +1,8 @@
 import { MODES, MODE_PAR_DEFAUT } from '../config/defauts.js';
 import { calculerObjectifs } from '../domaine/calcul-objectifs.js';
 import { invaliderDonneesRecap } from '../services/donnees-recap.js';
-import { enregistrerVersion, lireVersions } from '../services/objectifs.js';
+import { enregistrerVersion, lireObjectifsBruts, lireVersions } from '../services/objectifs.js';
+import { lireTousLesRepas } from '../services/repas.js';
 import { lireConfig } from '../services/stockage-local.js';
 import {
   ETATS,
@@ -11,6 +12,7 @@ import {
   surChangementEtat,
   validerConnexion,
 } from '../services/supabase.js';
+import { genererCSV, genererJSON, nomFichier, telecharger } from '../utils/export.js';
 import { arrondir, formaterNombre, lireNombre } from '../utils/nombres.js';
 import {
   afficherErreurChamp,
@@ -339,6 +341,48 @@ export function afficherReglages() {
 }
 
 /* ==========================================================================
+   Export
+   ========================================================================== */
+
+const carteExport = document.getElementById('carte-export');
+const boutonsExport = {
+  json: document.getElementById('bouton-export-json'),
+  csv: document.getElementById('bouton-export-csv'),
+};
+let exportEnCours = false;
+
+function mettreAJourExport() {
+  const actif = lireEtat() === ETATS.connecte && !exportEnCours;
+  Object.values(boutonsExport).forEach((bouton) => {
+    bouton.disabled = !actif;
+  });
+}
+
+// JSON : sauvegarde complète (repas + objectifs) ; CSV : repas seuls, pour un tableur.
+async function exporter(format) {
+  const bouton = boutonsExport[format];
+  const libelle = bouton.textContent;
+  carteExport.querySelector('.message').hidden = true;
+  exportEnCours = true;
+  mettreAJourExport();
+  bouton.textContent = 'Export…';
+  try {
+    if (format === 'json') {
+      const [repas, objectifs] = await Promise.all([lireTousLesRepas(), lireObjectifsBruts()]);
+      telecharger(genererJSON({ repas, objectifs }), nomFichier('json'), 'application/json');
+    } else {
+      telecharger(genererCSV(await lireTousLesRepas()), nomFichier('csv'), 'text/csv;charset=utf-8');
+    }
+  } catch (erreur) {
+    afficherMessage(carteExport, 'erreur', messageErreurSupabase(erreur, 'Export', 'repas'));
+  } finally {
+    exportEnCours = false;
+    bouton.textContent = libelle;
+    mettreAJourExport();
+  }
+}
+
+/* ==========================================================================
    Initialisation
    ========================================================================== */
 
@@ -349,6 +393,7 @@ function afficherEtat(etat) {
   etatAide.textContent = aide;
   etatConnexion.classList.toggle('etat--actif', connecte);
   boutonDeconnecter.disabled = !connecte;
+  mettreAJourExport();
 
   mettreAJourBoutons();
   if (connecte) {
@@ -376,5 +421,7 @@ export function initialiserReglages() {
   formProfil.addEventListener('input', surSaisie);
   formCalcul.addEventListener('input', surSaisie);
   document.getElementById('bouton-retablir-coefs').addEventListener('click', retablirCoefs);
+  boutonsExport.json.addEventListener('click', () => exporter('json'));
+  boutonsExport.csv.addEventListener('click', () => exporter('csv'));
   surChangementEtat(afficherEtat);
 }
