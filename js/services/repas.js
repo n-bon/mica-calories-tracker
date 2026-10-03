@@ -25,18 +25,10 @@ async function lireParPages(requete, limite = Infinity) {
 }
 
 // pris_le est envoyé en ISO UTC : l'instant reste exact quel que soit le fuseau de l'appareil.
-export async function ajouterRepas({ typeRepas, nom, prisLe, calories, proteines, glucides, lipides }) {
+export async function ajouterRepas(valeurs) {
   const { data, error } = await obtenirClient()
     .from('repas')
-    .insert({
-      type_repas: typeRepas,
-      nom,
-      pris_le: prisLe.toISOString(),
-      calories,
-      proteines,
-      glucides,
-      lipides,
-    })
+    .insert(versLigne(valeurs))
     .select()
     .single();
   if (error) throw error;
@@ -79,4 +71,27 @@ export async function lirePageRepas(debut, taille) {
     .range(debut, debut + taille - 1);
   if (error) throw error;
   return data;
+}
+
+function versLigne({ typeRepas, nom, prisLe, calories, proteines, glucides, lipides }) {
+  return { type_repas: typeRepas, nom, pris_le: prisLe.toISOString(), calories, proteines, glucides, lipides };
+}
+
+// modifie_le est renseigné en base par le trigger repas_maj_modifie_le.
+export async function modifierRepas(id, valeurs) {
+  const { data, error } = await obtenirClient()
+    .from('repas')
+    .update(versLigne(valeurs))
+    .eq('id', id)
+    .select()
+    .single();
+  if (error) throw error;
+  generation += 1;
+  return data;
+}
+
+export async function supprimerRepas(id) {
+  const { error } = await obtenirClient().from('repas').delete().eq('id', id);
+  if (error) throw error;
+  generation += 1;
 }

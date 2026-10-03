@@ -76,6 +76,7 @@
   --taille-logo: 2.5rem;        /* 56 px */
   --taille-symbole: 1.3125rem;  /* 21 px : cercle des symboles « ! » et « ✓ » */
   --taille-pastille: 0.875rem;  /* 14 px : pastille de statut */
+  --cible-icone: 1.5rem;        /* 24 px : cible tactile minimale WCAG 2.2 AA d'un bouton icône */
 
   /* États */
   --opacite-chargement: 0.5;    /* grille en cours de rechargement */

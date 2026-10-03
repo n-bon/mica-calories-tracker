@@ -801,10 +801,83 @@ input.filtres__saisie {
   overflow: hidden;
 }
 
-/* Le nom du repas passe à la ligne plutôt que d'élargir la colonne des dates */
+/* Le nom du repas passe à la ligne plutôt que d'élargir la colonne des dates ;
+   le crayon de modification occupe la marge à gauche de l'heure. */
 .historique__ligne-repas > th {
-  padding-left: var(--e-h-3);
   white-space: normal;
+}
+
+/* Ligne de repas dépliée : crayon à gauche, texte aligné à sa droite même s'il passe à la ligne */
+.historique__ligne-repas:not(.historique__ligne-repas--repliee) > th > .historique__contenu {
+  display: flex;
+  align-items: center;
+}
+
+.historique__modifier {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--cible-icone);
+  height: var(--cible-icone);
+  margin-right: var(--e-h-1);
+  padding: 0;
+  vertical-align: middle;
+  background: none;
+  color: var(--action);
+  border: none;
+  border-radius: var(--r-petit);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.historique__icone {
+  width: var(--taille-symbole);
+  height: var(--taille-symbole);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: var(--trait-graphique);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.historique__message {
+  margin-bottom: var(--e-2);
+}
+
+/* Panneau de modification d'un repas : formulaire de saisie réutilisé, boutons en pied */
+.panneau__titre {
+  margin-bottom: var(--e-3);
+}
+
+.panneau__pied--actions {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--e-1) var(--e-h-1);
+}
+
+.panneau__pied--actions > .bouton--principal {
+  grid-column: 1 / -1;
+}
+
+/* Confirmation de suppression : petit dialogue centré */
+.confirmation {
+  width: calc(100% - 2 * var(--e-h-2));
+  max-width: var(--largeur-texte);
+  padding: var(--e-4) var(--e-h-3) var(--e-3);
+  background-color: var(--carte);
+  color: var(--texte);
+  border: none;
+  border-radius: var(--r-carte);
+}
+
+.confirmation::backdrop {
+  background-color: var(--voile);
+}
+
+.confirmation__actions {
+  display: grid;
+  row-gap: var(--e-1);
+  margin-top: var(--e-3);
 }
 
 /* Panneau de détail d'un jour : feuille montant du bas sur mobile */

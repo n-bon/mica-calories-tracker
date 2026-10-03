@@ -191,6 +191,7 @@
       <h2 id="titre-historique" class="vue__titre">Historique</h2>
 
       <section class="carte carte--pleine historique" aria-labelledby="titre-historique">
+        <p id="historique-message" class="message historique__message" role="status" hidden><span class="message__symbole symbole" aria-hidden="true"></span><span class="message__texte"></span></p>
         <p id="historique-etat" class="historique__etat" role="status" hidden></p>
         <table id="historique-tableau" class="historique__tableau" hidden>
           <thead>
@@ -388,6 +389,25 @@
     </div>
     <div class="panneau__pied">
       <button class="bouton bouton--secondaire panneau__fermer" type="button">Fermer</button>
+    </div>
+  </dialog>
+
+  <dialog id="edition-repas" class="panneau" aria-labelledby="titre-edition">
+    <div id="edition-contenu" class="panneau__contenu">
+      <h2 id="titre-edition" class="carte__titre panneau__titre">Modifier le repas</h2>
+    </div>
+    <div class="panneau__pied panneau__pied--actions">
+      <button id="edition-enregistrer" class="bouton bouton--principal" type="submit" form="edition-formulaire-saisie">Enregistrer les modifications</button>
+      <button id="edition-supprimer" class="bouton bouton--secondaire" type="button">Supprimer</button>
+      <button id="edition-annuler" class="bouton bouton--secondaire" type="button">Annuler</button>
+    </div>
+  </dialog>
+
+  <dialog id="confirmation-suppression" class="confirmation" aria-labelledby="confirmation-texte">
+    <p id="confirmation-texte" class="confirmation__texte"></p>
+    <div class="confirmation__actions">
+      <button id="confirmation-supprimer" class="bouton bouton--principal" type="button">Supprimer</button>
+      <button id="confirmation-annuler" class="bouton bouton--secondaire" type="button">Annuler</button>
     </div>
   </dialog>
 

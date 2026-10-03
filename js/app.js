@@ -4,6 +4,7 @@ import { afficherCalendrier, initialiserCalendrier } from './vues/calendrier.js'
 import { afficherCartePoids } from './vues/carte-poids.js';
 import { afficherCarteResultat } from './vues/carte-resultat.js';
 import { initialiserDetail } from './vues/detail-jour.js';
+import { initialiserEdition } from './vues/edition-repas.js';
 import { afficherHistorique, initialiserHistorique } from './vues/historique.js';
 import { afficherReglages, focaliserConnexion, initialiserReglages } from './vues/reglages.js';
 import { afficherSaisie, initialiserSaisie } from './vues/saisie.js';
@@ -64,6 +65,8 @@ bandeau.querySelector('.bandeau__lien').addEventListener('click', (evenement) =>
   focaliserConnexion();
 });
 
+// Le panneau de modification copie le formulaire de saisie : à faire avant que la saisie ne le remplisse.
+initialiserEdition();
 initialiserSaisie();
 initialiserCalendrier();
 initialiserDetail();
